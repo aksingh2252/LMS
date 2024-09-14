@@ -1,0 +1,139 @@
+<app-progress *ngIf="dataLoading"></app-progress>
+<main id="main" class="main" *ngIf="action.ResponseReceived">
+
+    <div class="row">
+        <div class="pagetitle dashboard col-sm-8">
+            <h1>Manage Book Type</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a routerLink="admin/admin-dashboard">Home</a></li>
+                    <li class="breadcrumb-item active">Manage Book Type</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-4">
+            <button mat-raised-button color="primary" class="float-right" *ngIf="action.CanCreate"
+                (click)="NewBookType()">New
+                Book Type</button>
+        </div>
+    </div>
+
+
+    <section class="section">
+        <div class="card">
+            <div class="card-body ">
+                <div class="dataTable-top">
+                    <div class="dataTable-dropdown d-flex">
+                        <select class="dataTable-selector form-select form-select-sm" [(ngModel)]="itemPerPage">
+                            <option *ngFor="let option of PageSize" [value]="option">{{option}} </option>
+                        </select>
+                        <span class="ms-2">Entries per page</span>
+                    </div>
+                    <div class="dataTable-search">
+                        <input class="dataTable-input form-control form-control-sm" [(ngModel)]="Search"
+                            placeholder="Search..." type="text">
+                    </div>
+                </div>
+                <div class="table-container overflow-auto">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>S.No</th>
+
+                                <th style="cursor:pointer;" (click)="sort('BookTypeNo')">Book Type Name</th>
+
+                                <th style="cursor:pointer;" (click)="sort('Status')">Status</th>
+                                <th *ngIf="action.CanEdit">Edit</th>
+                                <th *ngIf="action.CanDelete">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr
+                                *ngFor="let item of BookTypeList |filter:Search|orderBy:sortKey:reverse|paginate: { itemsPerPage: itemPerPage, currentPage: p } ; ; let i = index;">
+                                <td>{{(itemPerPage * (p -1)) +i+ 1}}</td>
+
+                                <td>{{item.BookTypeName}}</td>
+
+                                <td>
+                                    <span class="p-1"
+                                        [ngClass]="item.Status == 1 ? 'badge text-bg-success':'badge text-bg-danger'">
+                                        {{item.StatusName}}
+                                    </span>
+                                </td>
+                                <td *ngIf="action.CanEdit">
+                                    <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
+                                        data-bs-target="#staticBackdrop" (click)="editBookType(item)">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </button>
+                                </td>
+                                <td *ngIf="action.CanDelete">
+                                    <button class="btn btn-sm btn-danger" (click)="deleteBookType(item)">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="dataTable-bottom">
+                    <pagination-controls (pageChange)="onTableDataChange($event)" style="float:right;"
+                        class="my-pagination"></pagination-controls>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">{{BookType.BookTypeId > 0 ?
+                        'Update':'New'}}
+                        Book Type
+                    </h1>
+                    <button type=" button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        (click)="NewBookType()"></button>
+                </div>
+                <div class="modal-body">
+
+                    <form #formBookType="ngForm">
+                        <div class="container">
+                            <div class="row">
+
+                                <mat-form-field appearance="outline" class="col-sm-6 form-group">
+                                    <mat-label>Book Type </mat-label>
+                                    <input matInput #BookTypeName="ngModel" name="BookTypeName"
+                                        [(ngModel)]="BookType.BookTypeName" required autofocus>
+                                    <mat-error
+                                        *ngIf="(BookTypeName.dirty  || BookTypeName.touched) || (BookTypeName.invalid && isSubmitted)">
+                                        Book Type Name is <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="col-sm-6 form-group">
+                                    <mat-label>Status</mat-label>
+                                    <mat-select #Status="ngModel" name="Status" [(ngModel)]="BookType.Status" required>
+                                        <mat-option [value]="status.Key"
+                                            *ngFor="let status of StatusList">{{status.Value}}</mat-option>
+                                    </mat-select>
+                                    <mat-error
+                                        *ngIf="(Status.dirty  || Status.touched) || (Status.invalid && isSubmitted)">
+                                        Status is <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" mat-raised-button color="warn" class="me-2" data-bs-dismiss="modal"
+                        (click)="NewBookType()">Cancel</button>
+                    <button mat-raised-button color="primary" (click)="SaveBookType()">{{BookType.BookTypeId >
+                        0 ? 'Update':'Submit'}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

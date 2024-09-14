@@ -1,0 +1,7 @@
+C:\Users\rahul\OneDrive\Desktop\Project_J\SchoolERP\SchoolERP\SchoolClasses\bin\ARM64\Debug\SchoolClasses.dll.config
+C:\Users\rahul\OneDrive\Desktop\Project_J\SchoolERP\SchoolERP\SchoolClasses\bin\ARM64\Debug\SchoolClasses.dll
+C:\Users\rahul\OneDrive\Desktop\Project_J\SchoolERP\SchoolERP\SchoolClasses\bin\ARM64\Debug\SchoolClasses.pdb
+C:\Users\rahul\OneDrive\Desktop\Project_J\SchoolERP\SchoolERP\SchoolClasses\obj\ARM64\Debug\SchoolClasses.csproj.AssemblyReference.cache
+C:\Users\rahul\OneDrive\Desktop\Project_J\SchoolERP\SchoolERP\SchoolClasses\obj\ARM64\Debug\SchoolClasses.csproj.CoreCompileInputs.cache
+C:\Users\rahul\OneDrive\Desktop\Project_J\SchoolERP\SchoolERP\SchoolClasses\obj\ARM64\Debug\SchoolClasses.dll
+C:\Users\rahul\OneDrive\Desktop\Project_J\SchoolERP\SchoolERP\SchoolClasses\obj\ARM64\Debug\SchoolClasses.pdb

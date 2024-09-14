@@ -1,0 +1,231 @@
+<app-progress *ngIf="dataLoading"></app-progress>
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Manage Page</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a routerLink="admin/admin-dashboard">Home</a></li>
+                <li class="breadcrumb-item active">Manage Page</li>
+            </ol>
+        </nav>
+    </div>
+
+    <section class="section dashboard">
+
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <span class="p-1">Page List</span>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                    (click)="resetForm()">New
+                    Page</button>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel">{{Page.PageId > 0
+                                ?'Update':'New'}} Page
+                            </h1>
+                            <button type=" button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                                (click)="resetForm()"></button>
+                        </div>
+                        <div class="modal-body">
+
+                            <form #formPage="ngForm">
+                                <div class="container">
+                                    <div class="row">
+
+                                        <mat-form-field appearance="outline" class="col-sm-6 form-group">
+                                            <mat-label>Group</mat-label>
+                                            <input matInput #PageGroupName="ngModel" name="StaffName"
+                                                (ngModelChange)="filterPageGroupList(Page.PageGroupName)"
+                                                [(ngModel)]="Page.PageGroupName" [matAutocomplete]="autoPageGroupName"
+                                                required autofocus>
+                                            <mat-autocomplete #autoPageGroupName="matAutocomplete" (optionSelected)="Page.PageGroupId = $event.option.id">
+                                                <mat-option *ngFor="let option of filterPageGroup" [id]="option.PageGroupId"
+                                                    [value]="option.PageGroupName">
+                                                    {{option.PageGroupName}}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                            <mat-error
+                                                *ngIf="(PageGroupName.dirty  || PageGroupName.touched) || (PageGroupName.invalid && isSubmitted)">
+                                                Group is <strong>required</strong>
+                                            </mat-error>
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline" class="col-sm-6 form-group">
+                                            <mat-label>Page Name</mat-label>
+                                            <input matInput #PageName="ngModel" name="PageName"
+                                                [(ngModel)]="Page.PageName" required autofocus>
+                                            <mat-error
+                                                *ngIf="(PageName.dirty  || PageName.touched) || (PageName.invalid && isSubmitted)">
+                                                Page name is <strong>required</strong>
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="row">
+
+                                        <mat-form-field appearance="outline" class="col-sm-6 form-group">
+                                            <mat-label>Page Url</mat-label>
+                                            <input matInput #PageUrl="ngModel" name="PageUrl" [(ngModel)]="Page.PageUrl"
+                                                required autofocus>
+                                            <mat-error
+                                                *ngIf="(PageUrl.dirty  || PageUrl.touched) || (PageUrl.invalid && isSubmitted)">
+                                                Page Url is <strong>required</strong>
+                                            </mat-error>
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline" class="col-sm-6 form-group">
+                                            <mat-label>Status</mat-label>
+                                            <mat-select #Status="ngModel" name="Status" [(ngModel)]="Page.Status"
+                                                required>
+                                                <mat-option [value]="status.Key"
+                                                    *ngFor="let status of StatusList">{{status.Value}}</mat-option>
+                                            </mat-select>
+                                            <mat-error
+                                                *ngIf="(Status.dirty  || Status.touched) || (Status.invalid && isSubmitted)">
+                                                Status is <strong>required</strong>
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+
+                            </form>
+                            <div class="modal-footer mt-2">
+                                <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal"
+                                    (click)="resetForm()">Cancel</button>
+                                <button class="btn btn-primary" (click)="savePage()">{{Page.PageId > 0 ?
+                                    'Update':'Add'}}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="table-container overflow-auto">
+                    <!-- <mat-form-field appearance="outline" class="mt-2 input_search">
+                        <mat-label>Search</mat-label>
+                        <input matInput (keyup)="applyFilter($event)" #input>
+                    </mat-form-field>
+
+                    <table mat-table [dataSource]="PageList" matSort (matSortChange)="announceSortChange($event)"
+                        class="table table-hover">
+
+                        <ng-container matColumnDef="PageName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Page Name</th>
+                            <td mat-cell *matCellDef="let element"> {{element.PageName}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="PageGroupName">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Group</th>
+                            <td mat-cell *matCellDef="let element"> {{element.PageGroupName}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="PageUrl">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Page Name</th>
+                            <td mat-cell *matCellDef="let element"> {{element.PageUrl}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="Status">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+                            <td mat-cell *matCellDef="let element">
+                                <span class="p-1"
+                                    [ngClass]="element.Status == 1 ? 'badge text-bg-success':'badge text-bg-danger'">
+                                    {{element.StatusName}}
+                                </span>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="edit">
+                            <th mat-header-cell *matHeaderCellDef id="edit">Edit</th>
+                            <td mat-cell *matCellDef="let element">
+                                <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
+                                    data-bs-target="#staticBackdrop" (click)="editPage(element)"><i
+                                        class="bi bi-pencil-square"></i> </button>
+                            </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="delete">
+                            <th mat-header-cell *matHeaderCellDef id="delete">Delete</th>
+                            <td mat-cell *matCellDef="let element">
+                                <button class="btn btn-sm btn-danger" (click)="deletePage(element)"><i
+                                        class="bi bi-trash-fill"></i></button>
+                            </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table>
+                    <mat-paginator [pageSizeOptions]="PageSizes" showFirstLastButtons
+                        aria-label="Select page of periodic elements">
+                    </mat-paginator>-->
+
+                    <div class="dataTable-top">
+                        <div class="dataTable-dropdown d-flex">
+                            <select class="dataTable-selector form-select form-select-sm" [(ngModel)]="itemPerPage">
+                                <option *ngFor="let option of PageSize" [value]="option">{{option}} </option>
+                            </select>
+                            <span class="ms-2">Entries per page</span>
+                        </div>
+                        <div class="dataTable-search">
+                            <input class="dataTable-input form-control form-control-sm" [(ngModel)]="Search"
+                                placeholder="Search..." type="text">
+                        </div>
+                    </div>
+
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>S.No</th>
+                                <th style="cursor:pointer;" (click)="sort('PageName')">Page Name</th>
+                                <th style="cursor:pointer;" (click)="sort('PageUrl')">Page URL</th>
+                                <th style="cursor:pointer;" (click)="sort('PageGroupName')">Page Group</th>
+                                <th style="cursor:pointer;" (click)="sort('Status')">Status</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr
+                                *ngFor="let item of PageList |filter:Search|orderBy:sortKey:reverse|paginate: { itemsPerPage: itemPerPage, currentPage: p } ; ; let i = index;">
+                                <td>{{(itemPerPage * (p -1)) +i+ 1}}</td>
+                                <td>{{item.PageName}}</td>
+                                <td>{{item.PageUrl}}</td>
+                                <td>{{item.PageGroupName}}</td>
+                                <td>
+                                    <span class="p-1"
+                                        [ngClass]="item.Status == 1 ? 'badge text-bg-success':'badge text-bg-danger'">
+                                        {{item.StatusName}}
+                                    </span>
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
+                                        data-bs-target="#staticBackdrop" (click)="editPage(item)">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </button>
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-danger" (click)="deletePage(item)">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="dataTable-bottom">
+                        <pagination-controls (pageChange)="onTableDataChange($event)" style="float:right;"
+                            class="my-pagination"></pagination-controls>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+</main>

@@ -1,0 +1,130 @@
+<app-progress *ngIf="dataLoading"></app-progress>
+<main id="main" class="main" *ngIf="action.ResponseReceived">
+
+    <div class="row">
+        <div class="pagetitle dashboard col-sm-8">
+            <h1>Manage Book Subject</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a routerLink="admin/admin-dashboard">Home</a></li>
+                    <li class="breadcrumb-item active">Manage Book Subject</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-4">
+            <button mat-raised-button color="primary" class="float-right" *ngIf="action.CanCreate"
+                (click)="NewBookSubject()">New Book Subject</button>
+        </div>
+    </div>
+
+
+    <section class="section">
+        <div class="card">
+            <div class="card-body ">
+                <div class="dataTable-top">
+                    <div class="dataTable-dropdown d-flex">
+                        <select class="dataTable-selector form-select form-select-sm" [(ngModel)]="itemPerPage">
+                            <option *ngFor="let option of PageSize" [value]="option">{{option}} </option>
+                        </select>
+                        <span class="ms-2">Entries per page</span>
+                    </div>
+                    <div class="dataTable-search">
+                        <input class="dataTable-input form-control form-control-sm" [(ngModel)]="Search"
+                            placeholder="Search..." type="text">
+                    </div>
+                </div>
+                <div class="table-container overflow-auto">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>S.No</th>
+                                <th>Book Subject Name</th>
+                                <th>Suject Name</th>
+                                 
+                                <th *ngIf="action.CanEdit">Edit</th>
+                                <th *ngIf="action.CanDelete">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr
+                                *ngFor="let b1 of BookSubjectList |filter:Search|orderBy:sortKey:reverse|paginate: { itemsPerPage: itemPerPage, currentPage: p } ; ; let i = index;">
+                                <td>{{(itemPerPage * (p -1)) +i+ 1}}</td>
+
+                                <td>{{b1.BookName}}</td>
+                                <td>{{b1.SubjectName}}</td>
+                                 
+                                <td *ngIf="action.CanEdit">
+                                    <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
+                                        data-bs-target="#staticBackdrop" (click)="editBookSubject(b1)">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </button>
+                                </td>
+                                <td *ngIf="action.CanDelete">
+                                    <button class="btn btn-sm btn-danger" (click)="deleteBookSubject(b1)">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="dataTable-bottom">
+                    <pagination-controls (pageChange)="onTableDataChange($event)" style="float:right;"
+                        class="my-pagination"></pagination-controls>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">{{BookSubject.BookSubjectId > 0 ?
+                        'Update':'New'}}
+                        BookSubject
+                    </h1>
+                    <button type=" button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        (click)="NewBookSubject()"></button>
+                </div>
+                <div class="modal-body">
+
+                    <form #formBookSubjectType="ngForm">
+                        <div class="container">
+                            <div class="row">
+
+                                <mat-form-field appearance="outline" class="col-sm-6 form-group">
+                                    <mat-label>Book Subject Name </mat-label>
+                                    <input matInput #BookSubjectName="ngModel" name="BookSubjectName"
+                                        [(ngModel)]="BookSubject.BookSubjectName" required autofocus>
+                                    <mat-error
+                                        *ngIf="(BookSubjectName.dirty  || BookSubjectName.touched) || (BookSubjectName.invalid && isSubmitted)">
+                                        Book Subject Name is <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="col-sm-6 form-group">
+                                    <mat-label>Subject Name </mat-label>
+                                    <input matInput #SubjectName="ngModel" name="SubjectName"
+                                        [(ngModel)]="BookSubject.SubjectName" required autofocus>
+                                    <mat-error
+                                        *ngIf="(SubjectName.dirty  || SubjectName.touched) || (SubjectName.invalid && isSubmitted)">
+                                        Subject Name Name is <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" mat-raised-button color="warn" class="me-2" data-bs-dismiss="modal"
+                        (click)="NewBookSubject()">Cancel</button>
+                    <button mat-raised-button color="primary" (click)=" SaveBookSubject()">{{BookSubject.BookSubjectId >
+                        0 ? 'Update':'Submit'}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

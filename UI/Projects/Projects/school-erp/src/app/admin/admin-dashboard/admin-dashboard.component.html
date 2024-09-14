@@ -1,0 +1,31 @@
+<app-progress *ngIf="dataLoading"></app-progress>
+<main id="main" class="main">
+
+  <div class="pagetitle">
+    <h1>Dashboard</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a>Home</a></li>
+        <li class="breadcrumb-item active">Dashboard</li>
+      </ol>
+    </nav>
+  </div>
+
+  <section class="section dashboard">
+
+    <div class="welcome">
+      <h1>Welcome to LMS</h1>
+      <div class="link">
+        <h2>Quick links</h2>
+        <ul>
+          <li><a routerLink="../book">Book</a></li>
+          <li><a routerLink="../book-issue">Book Issue</a></li>
+          <li><a routerLink="../news-paper">Newspaper</a></li>
+          <li><a routerLink="../magazine">Magzine</a></li>
+        </ul>
+      </div>
+    </div>
+
+  </section>
+
+</main>

@@ -1,0 +1,671 @@
+<app-progress *ngIf="dataLoading"></app-progress>
+<main id="main" class="main" *ngIf="action.ResponseReceived">
+
+    <div class="pagetitle">
+        <h1>Pupil List</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a routerLink="admin/admin-dashboard">Home</a></li>
+                <li class="breadcrumb-item active">Pupil List</li>
+            </ol>
+        </nav>
+    </div>
+
+    <section class="section dashboard">
+
+        <div class="card">
+            <div class="card-body ">
+                <form #FilterObjForm="ngForm">
+                    <div class="row mt-2">
+
+                        <mat-form-field appearance="outline" class="col-sm-2">
+                            <mat-label>Session</mat-label>
+                            <mat-select #SessionId="ngModel" name="SessionId" [(ngModel)]="FilterObj.SessionId"
+                                required autofocus>
+                                <!-- <mat-option value="">--All Session--</mat-option> -->
+                                <mat-option [value]="session.SessionId"
+                                    *ngFor="let session of SessionList">{{session.SessionName}}</mat-option>
+                            </mat-select>
+                            <mat-error
+                                *ngIf="(SessionId.dirty  || SessionId.touched) || (SessionId.invalid && isSubmitted)">
+                                Session is <strong>required</strong>
+                            </mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="col-sm-2">
+                            <mat-label>Class</mat-label>
+                            <mat-select #ClassId="ngModel" name="ClassId" [(ngModel)]="FilterObj.ClassId"
+                                (valueChange)="onClassChange2()">
+                                <mat-option value="">--All Class--</mat-option>
+                                <mat-option [value]="class.ClassId"
+                                    *ngFor="let class of ClassList">{{class.ClassName}}</mat-option>
+                            </mat-select>
+                            <!-- <mat-error
+                                    *ngIf="(ClassName.dirty  || ClassName.touched) || (ClassName.invalid && isSubmitted)">
+                                    Class is <strong>required</strong>
+                                </mat-error> -->
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="col-sm-2">
+                            <mat-label>Section</mat-label>
+                            <mat-select #SectionId="ngModel" name="SectionId" [(ngModel)]="FilterObj.SectionId">
+                                <mat-option value="">--All Section--</mat-option>
+                                <mat-option [value]="s1.SectionId"
+                                    *ngFor="let s1 of SectionList2">{{s1.SectionName}}</mat-option>
+                            </mat-select>
+                            <!-- <mat-error
+                                    *ngIf="(ClassName.dirty  || ClassName.touched) || (ClassName.invalid && isSubmitted)">
+                                    Class is <strong>required</strong>
+                                </mat-error> -->
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="col-sm-2">
+                            <mat-label>Pupli Type</mat-label>
+                            <mat-select #PupilTypeId="ngModel" name="PupilTypeId" [(ngModel)]="FilterObj.PupilTypeId">
+                                <mat-option value="">--All Type--</mat-option>
+                                <mat-option [value]="pupil.PupilTypeId"
+                                    *ngFor="let pupil of PupilTypeList">{{pupil.PupilTypeName}}</mat-option>
+                            </mat-select>
+                            <!-- <mat-error
+                                    *ngIf="(PupilTypeName.dirty  || PupilTypeName.touched) || (PupilTypeName.invalid && isSubmitted)">
+                                    PupilType is <strong>required</strong>
+                                </mat-error> -->
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="col-sm-2">
+                            <mat-label>Admission Type</mat-label>
+                            <mat-select #AdmissionType="ngModel" name="AdmissionType"
+                                [(ngModel)]="FilterObj.AdmissionType">
+                                <mat-option value="">--All Type--</mat-option>
+                                <mat-option [value]="AdmissionType.Key"
+                                    *ngFor="let AdmissionType of AdmissionTypeList">{{AdmissionType.Value}}</mat-option>
+                            </mat-select>
+                            <!-- <mat-error
+                                    *ngIf="(AdmissionType.dirty  || AdmissionType.touched) || (AdmissionType.invalid && isSubmitted)">
+                                    AdmissionType is <strong>required</strong>
+                                </mat-error> -->
+                        </mat-form-field>
+
+                        <div class="col-sm-2">
+                            <button mat-flat-button color="primary" (click)="getPupilList()">Search</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="table-container">
+
+                    <div class="dataTable-top">
+                        <div class="dataTable-dropdown d-flex">
+                            <select class="dataTable-selector form-select form-select-sm" [(ngModel)]="itemPerPage">
+                                <option *ngFor="let option of PageSize" [value]="option">{{option}} </option>
+                            </select>
+                            <span class="ms-2">Entries per page</span>
+                        </div>
+                        <div class="dataTable-search">
+                            <input class="dataTable-input form-control form-control-sm" [(ngModel)]="Search"
+                                placeholder="Search..." type="text">
+                        </div>
+                    </div>
+                    <a class="text-link text-link-sm" (click)="exportToExcel()">Export To Excel</a>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover" #table_1>
+                            <thead>
+                                <tr>
+                                    <th>S.No</th>
+                                    <th *ngIf="!isExporting && action.CanEdit">Edit</th>
+                                    <th style="cursor:pointer;" (click)="sort('AdmissionNo')">Admission No.</th>
+                                    <th style="cursor:pointer;" (click)="sort('PupilName')">Pupil</th>
+                                    <th style="cursor:pointer;" (click)="sort('PupilTypeId')">Type</th>
+                                    <th style="cursor:pointer;" (click)="sort('PupilAdmission.AdmissionType')">Admission Type</th>
+                                    <th style="cursor:pointer;" (click)="sort('PupilAdmission.AdmissionDate')">Admission
+                                        Date</th>
+                                    <!-- <th style="cursor:pointer;" (click)="sort('SessionName')">Session</th> -->
+                                    <th style="cursor:pointer;" (click)="sort('PupilAdmission.ClassName')">Class</th>
+                                    <th style="cursor:pointer;" (click)="sort('PupilAdmission.SectionName')">Section
+                                    </th>
+                                    <th style="cursor:pointer;" (click)="sort('PupilAdmission.RollNo')">Roll No.</th>
+                                    <th style="cursor:pointer;" (click)="sort('DOB')">DOB</th>
+                                    <th style="cursor:pointer;" (click)="sort('Gender')">Gender</th>
+                                    <th style="cursor:pointer;" (click)="sort('PupilAdmission.Height')">Height</th>
+                                    <th style="cursor:pointer;" (click)="sort('PupilAdmission.Weight')">Weight</th>
+                                    <th style="cursor:pointer;" (click)="sort('FatherName')">Father Name</th>
+                                    <th style="cursor:pointer;" (click)="sort('FatherOccupation')">Father's Occupation
+                                    </th>
+                                    <th style="cursor:pointer;" (click)="sort('MotherName')">Mother Name</th>
+                                    <th style="cursor:pointer;" (click)="sort('MotherOccupation')">Mother's Occupation
+                                    </th>
+                                    <th style="cursor:pointer;" (click)="sort('FamilyAnnualIncome')">Family Annual
+                                        Income
+                                    </th>
+                                    <th style="cursor:pointer;" (click)="sort('GuardianMobileNo')">Guardian Mobile No.
+                                    </th>
+                                    <th style="cursor:pointer;" (click)="sort('CorrespondenceAddress')">Correspondence
+                                        Address</th>
+                                    <th style="cursor:pointer;" (click)="sort('CorrespondenceCityId')">Correspondence
+                                        City
+                                    </th>
+                                    <th style="cursor:pointer;" (click)="sort('CorrespondencePinCode')">Correspondence
+                                        Pincode</th>
+                                    <th style="cursor:pointer;" (click)="sort('PermanentAddress')">Permanent Address
+                                    </th>
+                                    <th style="cursor:pointer;" (click)="sort('PermanentCityId')">Permanent City</th>
+                                    <th style="cursor:pointer;" (click)="sort('PermanentPinCode')">Permanent Pincode
+                                    </th>
+                                    <th style="cursor:pointer;" (click)="sort('Category')">Category</th>
+                                    <th style="cursor:pointer;" (click)="sort('BloodGroup')">Blood Group</th>
+                                    <th style="cursor:pointer;" (click)="sort('Religion')">Religion</th>
+                                    <th style="cursor:pointer;" (click)="sort('Nationality')">Nationality</th>
+                                    <th style="cursor:pointer;" (click)="sort('MobileNo')">Mobile No.</th>
+                                    <th style="cursor:pointer;" (click)="sort('AlternateNo')">Alternate No.</th>
+                                    <th style="cursor:pointer;" (click)="sort('Email')">Email</th>
+                                    <th style="cursor:pointer;" (click)="sort('AadhaarNo')">Aadhaar No.</th>
+                                    <th style="cursor:pointer;" (click)="sort('PreviousSchoolName')">Previous School
+                                    </th>
+                                    <th style="cursor:pointer;" (click)="sort('PreviousSchoolBoard')">Previous School
+                                        Board
+                                    </th>
+                                    <th style="cursor:pointer;" (click)="sort('PreviousSchoolClass')">Previous School
+                                        Class
+                                    </th>
+                                    <th style="cursor:pointer;" (click)="sort('PreviousSchoolMedium')">Previous School
+                                        Medium</th>
+                                    <th style="cursor:pointer;" (click)="sort('PreviousSchoolTCNo')">Previous School TC
+                                        No.
+                                    </th>
+                                    <th style="cursor:pointer;" (click)="sort('PreviousSchoolTCDate')">Previous School
+                                        TC
+                                        Date</th>
+                                    <th style="cursor:pointer;" (click)="sort('Remarks')">Remarks</th>
+                                    <th style="cursor:pointer;" (click)="sort('StudentPhoto')">Photo</th>
+                                    <!-- <th style="cursor:pointer;" (click)="sort('LoginPassword')">Login Password</th> -->
+                                    <th style="cursor:pointer;" (click)="sort('JoinDate')">Join Date</th>
+                                    <th style="cursor:pointer;" (click)="sort('PupilStatus')">Status</th>
+                                    <!-- <th style="cursor:pointer;" (click)="sort('PupilAdmissionStatus')">Pupil Admission
+                                        Status</th> -->
+                                    <!--<th>Delete</th>-->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr
+                                    *ngFor="let item of PupilList |filter:Search|orderBy:sortKey:reverse|paginate: { itemsPerPage: itemPerPage, currentPage: p } ; ; let i = index;">
+                                    <td>{{(itemPerPage * (p -1)) +i+ 1}}</td>
+                                    <td *ngIf="!isExporting && action.CanEdit">
+                                        <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
+                                            data-bs-target="#staticBackdrop" (click)="editPupil(item)">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>
+                                    </td>
+                                    <td>{{item.AdmissionNo }}</td>
+                                    <td>{{item.PupilName }}</td>
+                                    <td>{{item.PupilTypeName }}</td>
+                                    <td>{{item.PupilAdmission.AdmissionTypeName }}</td>
+                                    <td style="white-space: nowrap;">{{item.PupilAdmission.AdmissionDate | date :
+                                        "dd-MM-yyyy"}}</td>
+                                    <!-- <td>{{item.PupilAdmission.SessionName }}</td> -->
+                                    <td>{{item.PupilAdmission.ClassName }}</td>
+                                    <td>{{item.PupilAdmission.SectionName }}</td>
+                                    <td>{{item.PupilAdmission.RollNo }}</td>
+                                    <td style="white-space: nowrap;">{{item.DOB | date : "dd-MM-yyyy"}}</td>
+                                    <td>{{item.GenderName }}</td>
+                                    <td>{{item.PupilAdmission.Height }}</td>
+                                    <td>{{item.PupilAdmission.Weight }}</td>
+                                    <td>{{item.FatherName }}</td>
+                                    <td>{{item.FatherOccupation }}</td>
+                                    <td>{{item.MotherName }}</td>
+                                    <td>{{item.MotherOccupation }}</td>
+                                    <td>{{item.FamilyAnnualIncome }}</td>
+                                    <td>{{item.GuardianMobileNo }}</td>
+                                    <td>{{item.CorrespondenceAddress }}</td>
+                                    <td>{{item.CorrespondenceCityName }}</td>
+                                    <td>{{item.CorrespondencePinCode }}</td>
+                                    <td>{{item.PermanentAddress }}</td>
+                                    <td>{{item.PermanentCityName }}</td>
+                                    <td>{{item.PermanentPinCode }}</td>
+                                    <td>{{item.CategoryName }}</td>
+                                    <td>{{item.BloodGroupName }}</td>
+                                    <td>{{item.ReligionName }}</td>
+                                    <td>{{item.NationalityName }}</td>
+                                    <td>{{item.MobileNo }}</td>
+                                    <td>{{item.AlternateNo }}</td>
+                                    <td>{{item.Email }}</td>
+                                    <td>{{item.AadhaarNo }}</td>
+                                    <td>{{item.PreviousSchoolName }}</td>
+                                    <td>{{item.PreviousSchoolBoard }}</td>
+                                    <td>{{item.PreviousSchoolClass }}</td>
+                                    <td>{{item.PreviousSchoolMedium }}</td>
+                                    <td>{{item.PreviousSchoolTCNo }}</td>
+                                    <td>{{item.PreviousSchoolTCDate }}</td>
+                                    <td>{{item.Remarks }}</td>
+                                    <td>{{item.StudentPhoto }}</td>
+                                    <!-- <td>{{item.LoginPassword }}</td> -->
+                                    <td style="white-space: nowrap;">{{item.JoinDate | date : "dd-MM-yyyy" }}</td>
+                                    <td>
+                                        <span class="p-1"
+                                            [ngClass]="item.PupilStatus == 1 ? 'badge text-bg-success':'badge text-bg-danger'">
+                                            {{item.PupilStatusName}}
+                                        </span>
+                                    </td>
+                                    <!-- <td>
+                                        <span class="p-1"
+                                            [ngClass]="item.PupilAdmission.PupilAdmissionStatus == 1 ? 'badge text-bg-success':'badge text-bg-danger'">
+                                            {{item.PupilAdmission.PupilAdmissionStatusName}}
+                                        </span>
+                                    </td> -->
+                                    <!--<td>
+                                    <button class="btn btn-sm btn-danger" (click)="deletePupil(item)">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
+                                </td>-->
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="dataTable-bottom">
+                        <pagination-controls (pageChange)="p=$event" style="float:right;"
+                            class="my-pagination"></pagination-controls>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <div *ngIf="action.CanEdit" class="modal modal-lg fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+            tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">{{Pupil.PupilId > 0 ?
+                            'Update':'New'}}
+                            Admission
+                        </h1>
+                        <button type=" button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                            (click)="resetForm()"></button>
+                    </div>
+                    <div class="modal-body">
+
+                        <form #AdmissionForm="ngForm" class="d-flex justify-content-evenly flex-wrap">
+                            <div class="container">
+                                <h3 style="font-weight:500;">Personal Information</h3>
+                                <mat-divider class="mb-3"></mat-divider>
+                                <div class="row">
+
+                                    <mat-form-field appearance="outline" class="col-sm-3">
+                                        <mat-label>Pupil Type</mat-label>
+                                        <mat-select #PupilTypeId="ngModel" name="PupilTypeId"
+                                            [(ngModel)]="Pupil.PupilTypeId" required autofocus>
+                                            <mat-option [value]="option.PupilTypeId"
+                                                *ngFor="let option of PupilTypeList;">
+                                                {{option.PupilTypeName}}
+                                            </mat-option>
+                                        </mat-select>
+                                        <mat-error
+                                            *ngIf="(PupilTypeId.dirty  || PupilTypeId.touched) || (PupilTypeId.invalid && isSubmitted)">
+                                            Pupil Type is <strong>required</strong>
+                                        </mat-error>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="col-sm-3">
+                                        <mat-label>Pupil Name</mat-label>
+                                        <input matInput #PupilName="ngModel" name="PupilName"
+                                            [(ngModel)]="Pupil.PupilName" required autofocus>
+                                        <mat-error
+                                            *ngIf="(PupilName.dirty  || PupilName.touched) || (PupilName.invalid && isSubmitted)">
+                                            Pupil name is <strong>required</strong>
+                                        </mat-error>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="col-sm-3">
+                                        <mat-label>Gender</mat-label>
+                                        <mat-select #Gender="ngModel" name="Gender" [(ngModel)]="Pupil.Gender" required>
+                                            <mat-option [value]="gender.Key"
+                                                *ngFor="let gender of GenderList">{{gender.Value}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="col-sm-3">
+                                        <mat-label>DOB</mat-label>
+                                        <input matInput #DOB="ngModel" name="DOB" [(ngModel)]="Pupil.DOB" required
+                                            [matDatepicker]="DOBPicker">
+                                        <mat-datepicker-toggle matIconSuffix [for]="DOBPicker"></mat-datepicker-toggle>
+                                        <mat-datepicker #DOBPicker></mat-datepicker>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="col-sm-3">
+                                        <mat-label>Email</mat-label>
+                                        <input matInput #Email="ngModel" name="Email" email="true"
+                                            [(ngModel)]="Pupil.Email" autofocus>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="col-sm-3">
+                                        <mat-label>Mobile No.</mat-label>
+                                        <input matInput type="number" #MobileNo="ngModel" name="MobileNo"
+                                            [(ngModel)]="Pupil.MobileNo" autofocus>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="col-sm-3">
+                                        <mat-label>Aadhaar No.</mat-label>
+                                        <input matInput type="number" #AadhaarNo="ngModel" name="AadhaarNo"
+                                            [(ngModel)]="Pupil.AadhaarNo" autofocus>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="col-sm-3">
+                                        <mat-label>Admission No.</mat-label>
+                                        <input matInput #AdmissionNo="ngModel" name="AdmissionNo"
+                                            [(ngModel)]="Pupil.AdmissionNo" required autofocus>
+                                        <mat-error
+                                            *ngIf="(AdmissionNo.dirty  || AdmissionNo.touched) || (AdmissionNo.invalid && isSubmitted)">
+                                            Pupil name is <strong>required</strong>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                                <h3 style="font-weight:500;">Guardian Information</h3>
+                                <mat-divider class="mb-3"></mat-divider>
+                                <div class="row">
+
+                                    <mat-form-field appearance="outline" class="col-sm-3">
+                                        <mat-label>Father's Name</mat-label>
+                                        <input matInput #FatherName="ngModel" name="FatherName"
+                                            [(ngModel)]="Pupil.FatherName" autofocus>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="col-sm-3">
+                                        <mat-label>Father's Occupation</mat-label>
+                                        <input matInput #FatherOccupation="ngModel" name="FatherOccupation"
+                                            [(ngModel)]="Pupil.FatherOccupation" autofocus>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="col-sm-3">
+                                        <mat-label>Mother's Name</mat-label>
+                                        <input matInput #MotherName="ngModel" name="MotherName"
+                                            [(ngModel)]="Pupil.MotherName" autofocus>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="col-sm-3">
+                                        <mat-label>Mother's Occupation</mat-label>
+                                        <input matInput #MotherOccupation="ngModel" name="MotherOccupation"
+                                            [(ngModel)]="Pupil.MotherOccupation" autofocus>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="col-sm-3">
+                                        <mat-label>Family Annual Income</mat-label>
+                                        <input matInput #FamilyAnnualIncome="ngModel" name="FamilyAnnualIncome"
+                                            [(ngModel)]="Pupil.FamilyAnnualIncome" autofocus>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="col-sm-3">
+                                        <mat-label>Guardian Mobile No.</mat-label>
+                                        <input matInput type="number" #GuardianMobileNo="ngModel"
+                                            name="GuardianMobileNo" [(ngModel)]="Pupil.GuardianMobileNo" autofocus>
+                                    </mat-form-field>
+
+                                </div>
+
+                                <h3 style="font-weight:500;">Address</h3>
+                                <mat-divider class="mb-3"></mat-divider>
+                                <div class="row">
+
+                                    <h4>Correspondence Address</h4>
+                                    <mat-form-field appearance="outline" class="col-sm-3">
+                                        <mat-label>Correspondence Address</mat-label>
+                                        <input matInput #CorrespondenceAddress="ngModel" name="CorrespondenceAddress"
+                                            [(ngModel)]="Pupil.CorrespondenceAddress" autofocus>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="col-sm-3">
+                                        <mat-label>State</mat-label>
+                                        <mat-select name="CorrespondenceStateId" (selectionChange)="onStateChange(1)"
+                                            [(ngModel)]="Pupil.CorrespondenceStateId">
+                                            <mat-option [value]="option.StateId" *ngFor="let option of StateList;">
+                                                {{option.StateName}}
+                                            </mat-option>
+                                        </mat-select>
+
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="col-sm-3">
+                                        <mat-label>City</mat-label>
+                                        <mat-select #CorrespondenceCityId="ngModel" name="CorrespondenceCityId"
+                                            [(ngModel)]="Pupil.CorrespondenceCityId">
+                                            <mat-option [value]="option.CityId"
+                                                *ngFor="let option of CrosspondanceCityList;">
+                                                {{option.CityName}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="col-sm-3">
+                                        <mat-label>Pincode</mat-label>
+                                        <input type="number" matInput #CorrespondencePinCode="ngModel"
+                                            name="CorrespondencePinCode" [(ngModel)]="Pupil.CorrespondencePinCode">
+                                    </mat-form-field>
+
+                                </div>
+
+                                <div class="row">
+                                    <h4>Permanent Address</h4>
+                                    <mat-form-field appearance="outline" class="col-sm-3">
+                                        <mat-label>Permanent Address</mat-label>
+                                        <input matInput #PermanentAddress="ngModel" name="PermanentAddress"
+                                            [(ngModel)]="Pupil.PermanentAddress" autofocus>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="col-sm-3">
+                                        <mat-label>State</mat-label>
+                                        <mat-select name="PermanentStateId" (selectionChange)="onStateChange(2)"
+                                            [(ngModel)]="Pupil.PermanentStateId">
+                                            <mat-option [value]="option.StateId" *ngFor="let option of StateList;">
+                                                {{option.StateName}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="col-sm-3">
+                                        <mat-label>City</mat-label>
+                                        <mat-select #PermanentCityId="ngModel" name="PermanentCityId"
+                                            [(ngModel)]="Pupil.PermanentCityId">
+                                            <mat-option [value]="option.CityId"
+                                                *ngFor="let option of PermanentCityList;">
+                                                {{option.CityName}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="col-sm-3">
+                                        <mat-label>Pincode</mat-label>
+                                        <input type="number" matInput #PermanentPinCode="ngModel"
+                                            name="PermanentPinCode" [(ngModel)]="Pupil.PermanentPinCode">
+                                    </mat-form-field>
+
+                                </div>
+
+                                <h3 style="font-weight:500;">Category</h3>
+                                <mat-divider class="mb-3"></mat-divider>
+                                <div class="row">
+
+                                    <mat-form-field appearance="outline" class="col-sm-3">
+                                        <mat-label>Category</mat-label>
+                                        <mat-select #Category="ngModel" name="Category" [(ngModel)]="Pupil.Category">
+                                            <mat-option [value]="category.Key"
+                                                *ngFor="let category of CategoryList">{{category.Value}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="col-sm-3">
+                                        <mat-label>Blood Group</mat-label>
+                                        <mat-select #BloodGroup="ngModel" name="BloodGroup"
+                                            [(ngModel)]="Pupil.BloodGroup">
+                                            <mat-option [value]="Blood.Key"
+                                                *ngFor="let Blood of BloodGroupList">{{Blood.Value}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="col-sm-3">
+                                        <mat-label>Religion</mat-label>
+                                        <mat-select #Religion="ngModel" name="Religion" [(ngModel)]="Pupil.Religion">
+                                            <mat-option [value]="religion.Key"
+                                                *ngFor="let religion of ReligionList">{{religion.Value}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="col-sm-3">
+                                        <mat-label>Nationality</mat-label>
+                                        <mat-select #Nationality="ngModel" name="Nationality"
+                                            [(ngModel)]="Pupil.Nationality">
+                                            <mat-option [value]="nationality.Key"
+                                                *ngFor="let nationality of NationalityList">{{nationality.Value}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                </div>
+
+                                <h3 style="font-weight:500;">Previous School Information (If Any)</h3>
+                                <mat-divider class="mb-3"></mat-divider>
+                                <div class="row">
+
+                                    <mat-form-field appearance="outline" class="col-sm-3">
+                                        <mat-label>Previous School</mat-label>
+                                        <input matInput #PreviousSchoolName="ngModel" name="PreviousSchoolName"
+                                            [(ngModel)]="Pupil.PreviousSchoolName" autofocus>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="col-sm-3">
+                                        <mat-label>Previous Board</mat-label>
+                                        <input matInput #PreviousSchoolBoard="ngModel" name="PreviousSchoolBoard"
+                                            [(ngModel)]="Pupil.PreviousSchoolBoard" autofocus>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="col-sm-3">
+                                        <mat-label>Previous Class</mat-label>
+                                        <input matInput #PreviousSchoolClass="ngModel" name="PreviousSchoolClass"
+                                            [(ngModel)]="Pupil.PreviousSchoolClass" autofocus>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="col-sm-3">
+                                        <mat-label>TC No.</mat-label>
+                                        <input matInput #PreviousSchoolTCNo="ngModel" name="PreviousSchoolTCNo"
+                                            [(ngModel)]="Pupil.PreviousSchoolTCNo" autofocus>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="col-sm-3">
+                                        <mat-label>TC Date</mat-label>
+                                        <input matInput #PreviousSchoolTCDate="ngModel" name="PreviousSchoolTCDate"
+                                            [(ngModel)]="Pupil.PreviousSchoolTCDate"
+                                            [matDatepicker]="PreviousSchoolTCDatePicker">
+                                        <mat-datepicker-toggle matIconSuffix
+                                            [for]="PreviousSchoolTCDatePicker"></mat-datepicker-toggle>
+                                        <mat-datepicker #PreviousSchoolTCDatePicker></mat-datepicker>
+                                    </mat-form-field>
+                                </div>
+
+                                <h3 style="font-weight:500;">Class Details</h3>
+                                <mat-divider class="mb-3"></mat-divider>
+                                <div class="row">
+
+                                    <mat-form-field appearance="outline" class="col-sm-3">
+                                        <mat-label>AdmissionType</mat-label>
+                                        <mat-select #AdmissionType="ngModel" name="AdmissionType"
+                                            [(ngModel)]="PupilAdmission.AdmissionType" required [autofocus]="true">
+                                            <mat-option [value]="admissionType.Key"
+                                                *ngFor="let admissionType of AdmissionTypeList">{{admissionType.Value}}</mat-option>
+                                        </mat-select>
+                                        <mat-error
+                                            *ngIf="(AdmissionType.dirty  || AdmissionType.touched) || (AdmissionType.invalid && isSubmitted)">
+                                            AdmissionType Name is <strong>required</strong>
+                                        </mat-error>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="col-sm-3">
+                                        <mat-label>Admission Date</mat-label>
+                                        <input matInput #AdmissionDate="ngModel" name="AdmissionDate"
+                                            [(ngModel)]="PupilAdmission.AdmissionDate" required
+                                            [matDatepicker]="AdmissionDatePicker">
+                                        <mat-datepicker-toggle matIconSuffix
+                                            [for]="AdmissionDatePicker"></mat-datepicker-toggle>
+                                        <mat-datepicker #AdmissionDatePicker></mat-datepicker>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="col-sm-3">
+                                        <mat-label>Session</mat-label>
+                                        <mat-select #Session="ngModel" name="Session"
+                                            [(ngModel)]="PupilAdmission.SessionId" required autofocus>
+                                            <mat-option [value]="option.SessionId" *ngFor="let option of SessionList;">
+                                                {{option.SessionName}}
+                                            </mat-option>
+                                        </mat-select>
+                                        <mat-error
+                                            *ngIf="(Session.dirty  || Session.touched) || (Session.invalid && isSubmitted)">
+                                            Session Name is <strong>required</strong>
+                                        </mat-error>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="col-sm-3">
+                                        <mat-label>Class</mat-label>
+                                        <mat-select name="ClassId" (selectionChange)="onClassChange()"
+                                            [(ngModel)]="PupilAdmission.ClassId" required autofocus>
+                                            <mat-option [value]="option.ClassId" *ngFor="let option of ClassList;">
+                                                {{option.ClassName}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="col-sm-3">
+                                        <mat-label>Section</mat-label>
+                                        <mat-select #Section="ngModel" name="Section"
+                                            [(ngModel)]="PupilAdmission.SectionId" required autofocus>
+                                            <mat-option [value]="option.SectionId" *ngFor="let option of SectionList;">
+                                                {{option.SectionName}}
+                                            </mat-option>
+                                        </mat-select>
+                                        <mat-error
+                                            *ngIf="(Section.dirty  || Section.touched) || (Section.invalid && isSubmitted)">
+                                            Section Name is <strong>required</strong>
+                                        </mat-error>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="col-sm-3">
+                                        <mat-label>Roll No</mat-label>
+                                        <input matInput type="number" #RollNo="ngModel" name="RollNo"
+                                            [(ngModel)]="PupilAdmission.RollNo" autofocus>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="col-sm-3">
+                                        <mat-label>Student Height</mat-label>
+                                        <input matInput type="number" #Height="ngModel" name="Height"
+                                            [(ngModel)]="PupilAdmission.Height" autofocus>
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" class="col-sm-3">
+                                        <mat-label>Student Weight</mat-label>
+                                        <input matInput type="number" #Weight="ngModel" name="Weight"
+                                            [(ngModel)]="PupilAdmission.Weight" autofocus>
+                                    </mat-form-field>
+
+                                </div>
+
+                                <h3 style="font-weight:500;">Remarks</h3>
+                                <mat-divider class="mb-3"></mat-divider>
+                                <div class="row">
+                                    <mat-form-field appearance="outline" class="col-sm-3">
+                                        <mat-label>Remarks</mat-label>
+                                        <input matInput #Remaks="ngModel" name="Remaks" [(ngModel)]="Pupil.Remaks"
+                                            autofocus>
+                                    </mat-form-field>
+                                </div>
+
+                            </div>
+
+                        </form>
+                        <div class="modal-footer mt-2">
+                            <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal"
+                                (click)="resetForm()">Cancel</button>
+                            <button class="btn btn-primary" (click)="savePupil()">{{Pupil.PupilId >
+                                0 ? 'Update':'Add'}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+</main>

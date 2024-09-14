@@ -1,0 +1,200 @@
+<app-progress *ngIf="dataLoading"></app-progress>
+<main id="main" class="main" *ngIf="action.ResponseReceived">
+
+    <div class="row">
+        <div class="pagetitle dashboard col-sm-8">
+            <h1>Manage Purchase</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a routerLink="admin/admin-dashboard">Home</a></li>
+                    <li class="breadcrumb-item active">Manage Purchase</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-4">
+            <button mat-raised-button color="primary" class="float-right" *ngIf="action.CanCreate"
+                (click)="NewPurchase()">New Purchase</button>
+        </div>
+    </div>
+
+
+    <section class="section">
+        <div class="card">
+            <div class="card-body ">
+                <div class="dataTable-top">
+                    <div class="dataTable-dropdown d-flex">
+                        <select class="dataTable-selector form-select form-select-sm" [(ngModel)]="itemPerPage">
+                            <option *ngFor="let option of PageSize" [value]="option">{{option}} </option>
+                        </select>
+                        <span class="ms-2">Entries per page</span>
+                    </div>
+                    <div class="dataTable-search">
+                        <input class="dataTable-input form-control form-control-sm" [(ngModel)]="Search"
+                            placeholder="Search..." type="text">
+                    </div>
+                </div>
+                <div class="table-container overflow-auto">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>S.No</th>
+                                <th>Supplier Name</th>
+                                <th>Invoice No</th>
+                                <th>Invoice Date</th>
+                                <th>Base Amount</th>
+                                <th>Discount Amount </th>
+                                <th> Taxable Amount</th>
+                                <th>CGST Amount</th>
+                                <th>SGST Amount</th>
+                                <th>IGST Amount</th>
+                                <th>Gross Amount</th>
+                                <th *ngIf="action.CanEdit">Edit</th>
+                                <th *ngIf="action.CanDelete">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr
+                                *ngFor="let b1 of PurchaseList |filter:Search|orderBy:sortKey:reverse|paginate: { itemsPerPage: itemPerPage, currentPage: p } ; ; let i = index;">
+                                <td>{{(itemPerPage * (p -1)) +i+ 1}}</td>
+
+                                <td>{{b1.SupplierName}}</td>
+                                <td>{{b1.InvoiceNo}}</td>
+                                <td>{{b1.InvoiceDate}}</td>
+                                <td>{{b1.BaseAmount}}</td>
+                                <td>{{b1.DiscountAmount}}</td>
+                                <td>{{b1.TaxableAmount}}</td>
+                                <td>{{b1.CGSTAmount}}</td>
+                                <td>{{b1.SGSTAmount}}</td>
+                                <td>{{b1.IGSTAmount}}</td>
+                                <td>{{b1.GrossAmount}}</td>
+                                <td *ngIf="action.CanEdit">
+                                    <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
+                                        data-bs-target="#staticBackdrop" (click)="editPurchase(b1)">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </button>
+                                </td>
+                                <td *ngIf="action.CanDelete">
+                                    <button class="btn btn-sm btn-danger" (click)="deletePurchase(b1)">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="dataTable-bottom">
+                    <pagination-controls (pageChange)="onTableDataChange($event)" style="float:right;"
+                        class="my-pagination"></pagination-controls>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">{{Purchase.PurchaseId > 0 ?
+                        'Update':'New'}}
+                        Purchase
+                    </h1>
+                    <button type=" button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        (click)="NewPurchase()"></button>
+                </div>
+                <div class="modal-body">
+
+                    <form #formPurchaseType="ngForm">
+                        <div class="container">
+                            <div class="row">
+
+                                <mat-form-field appearance="outline" class="col-sm-6 form-group">
+                                    <mat-label>Supplier Name </mat-label>
+                                    <input matInput #SupplierName="ngModel" name="SupplierName"
+                                        [(ngModel)]="Purchase.SupplierId" required autofocus>
+                                    <mat-error
+                                        *ngIf="(SupplierName.dirty  || SupplierName.touched) || (SupplierName.invalid && isSubmitted)">
+                                        Supplier Name is <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="col-sm-6 form-group">
+                                    <mat-label>Invoice No </mat-label>
+                                    <input matInput #InvoiceNo="ngModel" name="InvoiceNo" [(ngModel)]="Purchase.InvoiceNo"
+                                        required autofocus>
+                                    <mat-error
+                                        *ngIf="(InvoiceNo.dirty  || InvoiceNo.touched) || (InvoiceNo.invalid && isSubmitted)">
+                                        Invoice No Name is <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="col-sm-6 form-group">
+                                    <mat-label>Invoice Date </mat-label>
+                                    <input matInput #InvoiceDate="ngModel" name="InvoiceDate" [(ngModel)]="Purchase.InvoiceDate" required
+                                        autofocus>
+                                    <mat-error
+                                        *ngIf="(InvoiceDate.dirty  || InvoiceDate.touched) || (InvoiceDate.invalid && isSubmitted)">
+                                        Invoice Date is <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="col-sm-6 form-group">
+                                    <mat-label>Base Amount </mat-label>
+                                    <input matInput #BaseAmount="ngModel" name="BaseAmount" [(ngModel)]="Purchase.BaseAmount" required
+                                        autofocus>
+                                    <mat-error
+                                        *ngIf="(BaseAmount.dirty  || BaseAmount.touched) || (BaseAmount.invalid && isSubmitted)">
+                                        Base Amount Name is <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="col-sm-6 form-group">
+                                    <mat-label>Discount Amount</mat-label>
+                                    <input matInput #DiscountAmount="ngModel" name="DiscountAmount" [(ngModel)]="Purchase.DiscountAmount"
+                                        required autofocus>
+                                    <mat-error
+                                        *ngIf="(DiscountAmount.dirty  || DiscountAmount.touched) || (DiscountAmount.invalid && isSubmitted)">
+                                        Discount Amountis <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="col-sm-6 form-group">
+                                    <mat-label>Taxable Amount </mat-label>
+                                    <input matInput #TaxableAmount="ngModel" name="TaxableAmount" [(ngModel)]="Purchase.TaxableAmount"
+                                        required autofocus>
+                                    <mat-error
+                                        *ngIf="(TaxableAmount.dirty  || TaxableAmount.touched) || (TaxableAmount.invalid && isSubmitted)">
+                                        Taxable Amount is <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field>
+                                
+                                <mat-form-field appearance="outline" class="col-sm-6 form-group">
+                                    <mat-label>Gross Amount </mat-label>
+                                    <input matInput #GrossAmount="ngModel" name="GrossAmount" [(ngModel)]="Purchase.GrossAmount"
+                                        required autofocus>
+                                    <mat-error
+                                        *ngIf="(GrossAmount.dirty  || GrossAmount.touched) || (GrossAmount.invalid && isSubmitted)">
+                                        Gross Amount is <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field>
+
+
+
+                                
+
+
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" mat-raised-button color="warn" class="me-2" data-bs-dismiss="modal"
+                        (click)="NewPurchase()">Cancel</button>
+                    <button mat-raised-button color="primary" (click)=" SavePurchase()">{{Purchase.PurchaseId >
+                        0 ? 'Update':'Submit'}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

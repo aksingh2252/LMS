@@ -1,0 +1,1590 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="school" Class="SchoolDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=.;Initial Catalog=school;Integrated Security=True" SettingsObjectName="SchoolClasses.Properties.Settings" SettingsPropertyName="schoolConnectionString1" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Book" Member="Books">
+    <Type Name="Book">
+      <Column Name="BookId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="BookName" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="AuthorName" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="Edition" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Publisher" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="PublishingYear" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TotalPages" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Volume" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BookTypeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="BookCount" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Book_BookClass" Member="BookClasses" ThisKey="BookId" OtherKey="BookId" Type="BookClass" />
+      <Association Name="Book_BookDetail" Member="BookDetails" ThisKey="BookId" OtherKey="BookId" Type="BookDetail" />
+      <Association Name="Book_BookFine" Member="BookFines" ThisKey="BookId" OtherKey="BookId" Type="BookFine" />
+      <Association Name="Book_BookIssue" Member="BookIssues" ThisKey="BookId" OtherKey="BookId" Type="BookIssue" />
+      <Association Name="Book_BookSubject" Member="BookSubjects" ThisKey="BookId" OtherKey="BookId" Type="BookSubject" />
+      <Association Name="BookType_Book" Member="BookType" ThisKey="BookTypeId" OtherKey="BookTypeId" Type="BookType" IsForeignKey="true" />
+      <Association Name="StaffLogin_Book" Member="StaffLogin" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="StaffLogin_Book1" Member="StaffLogin1" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.VehicleType" Member="VehicleTypes">
+    <Type Name="VehicleType">
+      <Column Name="VehicleTypeId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="VehicleTypeName" Type="System.String" DbType="NVarChar(150) NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="VehicleType_Vehicle" Member="Vehicles" ThisKey="VehicleTypeId" OtherKey="VehicleTypeId" Type="Vehicle" />
+      <Association Name="StaffLogin_VehicleType" Member="StaffLogin" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.BookClass" Member="BookClasses">
+    <Type Name="BookClass">
+      <Column Name="BookClassId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="BookId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ClassId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Book_BookClass" Member="Book" ThisKey="BookId" OtherKey="BookId" Type="Book" IsForeignKey="true" />
+      <Association Name="Class_BookClass" Member="Class" ThisKey="ClassId" OtherKey="ClassId" Type="Class" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.BookDetail" Member="BookDetails">
+    <Type Name="BookDetail">
+      <Column Name="BookDetailsId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="BookId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PurchaseBookId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="BookNo" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="BookStatus" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Book_BookDetail" Member="Book" ThisKey="BookId" OtherKey="BookId" Type="Book" IsForeignKey="true" />
+      <Association Name="PurchaseBook_BookDetail" Member="PurchaseBook" ThisKey="PurchaseBookId" OtherKey="PurchaseBookId" Type="PurchaseBook" IsForeignKey="true" />
+      <Association Name="StaffLogin_BookDetail" Member="StaffLogin" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="StaffLogin_BookDetail1" Member="StaffLogin1" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.BookFine" Member="BookFines">
+    <Type Name="BookFine">
+      <Column Name="BookFineId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="BookId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FineAmount" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Column Name="BookIssueId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Paid" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="DueDays" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PayableAmount" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Book_BookFine" Member="Book" ThisKey="BookId" OtherKey="BookId" Type="Book" IsForeignKey="true" />
+      <Association Name="BookIssue_BookFine" Member="BookIssue" ThisKey="BookIssueId" OtherKey="BookIssueId" Type="BookIssue" IsForeignKey="true" />
+      <Association Name="StaffLogin_BookFine" Member="StaffLogin" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="StaffLogin_BookFine1" Member="StaffLogin1" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.BookIssue" Member="BookIssues">
+    <Type Name="BookIssue">
+      <Column Name="BookIssueId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="BookId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="StudentName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="StaffId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="IssueDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ReturnDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="FineAmount" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Column Name="Remarks" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="IsReturned" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="BookIssue_BookFine" Member="BookFines" ThisKey="BookIssueId" OtherKey="BookIssueId" Type="BookFine" />
+      <Association Name="Book_BookIssue" Member="Book" ThisKey="BookId" OtherKey="BookId" Type="Book" IsForeignKey="true" />
+      <Association Name="Staff_BookIssue" Member="Staff" ThisKey="StaffId" OtherKey="StaffId" Type="Staff" IsForeignKey="true" />
+      <Association Name="StaffLogin_BookIssue" Member="StaffLogin" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="StaffLogin_BookIssue1" Member="StaffLogin1" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.BookRack" Member="BookRacks">
+    <Type Name="BookRack">
+      <Column Name="BookRackId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="RackId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SubjectId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ClassId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Class_BookRack" Member="Class" ThisKey="ClassId" OtherKey="ClassId" Type="Class" IsForeignKey="true" />
+      <Association Name="Rack_BookRack" Member="Rack" ThisKey="RackId" OtherKey="RackId" Type="Rack" IsForeignKey="true" />
+      <Association Name="StaffLogin_BookRack" Member="StaffLogin" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="Subject_BookRack" Member="Subject" ThisKey="SubjectId" OtherKey="SubjectId" Type="Subject" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.BookSubject" Member="BookSubjects">
+    <Type Name="BookSubject">
+      <Column Name="BookSubjectId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="BookId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SubjectId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Book_BookSubject" Member="Book" ThisKey="BookId" OtherKey="BookId" Type="Book" IsForeignKey="true" />
+      <Association Name="Subject_BookSubject" Member="Subject" ThisKey="SubjectId" OtherKey="SubjectId" Type="Subject" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.BookType" Member="BookTypes">
+    <Type Name="BookType">
+      <Column Name="BookTypeId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="BookTypeName" Type="System.String" DbType="NVarChar(150) NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="BookType_Book" Member="Books" ThisKey="BookTypeId" OtherKey="BookTypeId" Type="Book" />
+      <Association Name="StaffLogin_BookType" Member="StaffLogin" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.City" Member="Cities">
+    <Type Name="City">
+      <Column Name="CityId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="StateId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CityName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="City_Supplier" Member="Suppliers" ThisKey="CityId" OtherKey="CityId" Type="Supplier" />
+      <Association Name="StaffLogin_City" Member="StaffLogin" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="State_City" Member="State" ThisKey="StateId" OtherKey="StateId" Type="State" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Class" Member="Classes">
+    <Type Name="Class">
+      <Column Name="ClassId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ParentClassId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ClassName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="ClassNo" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Class_BookClass" Member="BookClasses" ThisKey="ClassId" OtherKey="ClassId" Type="BookClass" />
+      <Association Name="Class_BookRack" Member="BookRacks" ThisKey="ClassId" OtherKey="ClassId" Type="BookRack" />
+      <Association Name="Class_Class" Member="Classes" ThisKey="ClassId" OtherKey="ParentClassId" Type="Class" />
+      <Association Name="Class_ClassExam" Member="ClassExams" ThisKey="ClassId" OtherKey="ClassId" Type="ClassExam" />
+      <Association Name="Class_ClassFullMark" Member="ClassFullMarks" ThisKey="ClassId" OtherKey="ClassId" Type="ClassFullMark" />
+      <Association Name="Class_ClassSubject" Member="ClassSubjects" ThisKey="ClassId" OtherKey="ClassId" Type="ClassSubject" />
+      <Association Name="Class_FeeClassHead" Member="FeeClassHeads" ThisKey="ClassId" OtherKey="ClassId" Type="FeeClassHead" />
+      <Association Name="Class_GradingSystem" Member="GradingSystems" ThisKey="ClassId" OtherKey="ClassId" Type="GradingSystem" />
+      <Association Name="Class_Registration" Member="Registrations" ThisKey="ClassId" OtherKey="ClassId" Type="Registration" />
+      <Association Name="Class_RegistrationForm" Member="RegistrationForms" ThisKey="ClassId" OtherKey="ClassId" Type="RegistrationForm" />
+      <Association Name="Class_Section" Member="Sections" ThisKey="ClassId" OtherKey="ClassId" Type="Section" />
+      <Association Name="Class_SubjectOption" Member="SubjectOptions" ThisKey="ClassId" OtherKey="ClassId" Type="SubjectOption" />
+      <Association Name="Class_Class" Member="Class1" ThisKey="ParentClassId" OtherKey="ClassId" Type="Class" IsForeignKey="true" />
+      <Association Name="StaffLogin_Class" Member="StaffLogin" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ClassAttendance" Member="ClassAttendances">
+    <Type Name="ClassAttendance">
+      <Column Name="ClassAttendanceId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SessionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="HyWorkingDays" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AnWorkingDays" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="ClassAttendance_PupilAttendance" Member="PupilAttendances" ThisKey="ClassAttendanceId" OtherKey="ClassAttendanceId" Type="PupilAttendance" />
+      <Association Name="Section_ClassAttendance" Member="Section" ThisKey="SectionId" OtherKey="SectionId" Type="Section" IsForeignKey="true" />
+      <Association Name="Session_ClassAttendance" Member="Session" ThisKey="SectionId" OtherKey="SessionId" Type="Session" IsForeignKey="true" />
+      <Association Name="StaffLogin_ClassAttendance" Member="StaffLogin" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="StaffLogin_ClassAttendance1" Member="StaffLogin1" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ClassExam" Member="ClassExams">
+    <Type Name="ClassExam">
+      <Column Name="ClassExamId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SessionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ClassId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ExamId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ExamNo" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IsPractical" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsTheory" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="ClassExam_SubjectFullMark" Member="SubjectFullMarks" ThisKey="ClassExamId" OtherKey="ClassExamId" Type="SubjectFullMark" />
+      <Association Name="Class_ClassExam" Member="Class" ThisKey="ClassId" OtherKey="ClassId" Type="Class" IsForeignKey="true" />
+      <Association Name="Exam_ClassExam" Member="Exam" ThisKey="ExamId" OtherKey="ExamId" Type="Exam" IsForeignKey="true" />
+      <Association Name="Session_ClassExam" Member="Session" ThisKey="SessionId" OtherKey="SessionId" Type="Session" IsForeignKey="true" />
+      <Association Name="StaffLogin_ClassExam" Member="StaffLogin" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="StaffLogin_ClassExam1" Member="StaffLogin1" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ClassFullMark" Member="ClassFullMarks">
+    <Type Name="ClassFullMark">
+      <Column Name="ClassFullMarkId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ClassId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SessionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Term" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="PassingMarks" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="FullMarks" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Class_ClassFullMark" Member="Class" ThisKey="ClassId" OtherKey="ClassId" Type="Class" IsForeignKey="true" />
+      <Association Name="Session_ClassFullMark" Member="Session" ThisKey="SessionId" OtherKey="SessionId" Type="Session" IsForeignKey="true" />
+      <Association Name="StaffLogin_ClassFullMark" Member="StaffLogin" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="StaffLogin_ClassFullMark1" Member="StaffLogin1" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ClassSubject" Member="ClassSubjects">
+    <Type Name="ClassSubject">
+      <Column Name="ClassSubjectId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SessionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ClassId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SubjectId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SubjectCode" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="SubjectNo" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IsTheory" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsPractical" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsGrade" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="GradeGroupId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="ClassSubject_ExamFullMark" Member="ExamFullMarks" ThisKey="ClassSubjectId" OtherKey="ClassSubjectId" Type="ExamFullMark" />
+      <Association Name="ClassSubject_PupilSubject" Member="PupilSubjects" ThisKey="ClassSubjectId" OtherKey="ClassSubjectId" Type="PupilSubject" />
+      <Association Name="ClassSubject_SubjectFullMark" Member="SubjectFullMarks" ThisKey="ClassSubjectId" OtherKey="ClassSubjectId" Type="SubjectFullMark" />
+      <Association Name="ClassSubject_SubjectGradingScale" Member="SubjectGradingScales" ThisKey="ClassSubjectId" OtherKey="ClassSubjectId" Type="SubjectGradingScale" />
+      <Association Name="Class_ClassSubject" Member="Class" ThisKey="ClassId" OtherKey="ClassId" Type="Class" IsForeignKey="true" />
+      <Association Name="Session_ClassSubject" Member="Session" ThisKey="SessionId" OtherKey="SessionId" Type="Session" IsForeignKey="true" />
+      <Association Name="StaffLogin_ClassSubject" Member="StaffLogin" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="StaffLogin_ClassSubject1" Member="StaffLogin1" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="Subject_ClassSubject" Member="Subject" ThisKey="SubjectId" OtherKey="SubjectId" Type="Subject" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Department" Member="Departments">
+    <Type Name="Department">
+      <Column Name="DepartmentId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="DepartmentName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Association Name="Department_Staff" Member="Staffs" ThisKey="DepartmentId" OtherKey="DepartmentId" Type="Staff" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Designation" Member="Designations">
+    <Type Name="Designation">
+      <Column Name="DesignationId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="DesignationName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Association Name="Designation_Staff" Member="Staffs" ThisKey="DesignationId" OtherKey="DesignationId" Type="Staff" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Exam" Member="Exams">
+    <Type Name="Exam">
+      <Column Name="ExamId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ExamTypeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ExamName" Type="System.String" DbType="NVarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="ExamShortName" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Exam_ClassExam" Member="ClassExams" ThisKey="ExamId" OtherKey="ExamId" Type="ClassExam" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ExamFullMark" Member="ExamFullMarks">
+    <Type Name="ExamFullMark">
+      <Column Name="ExamFullMarkId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ExamTypeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ClassSubjectId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Term" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="TheoryPassingMarks" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="TheoryFullMarks" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="PracticalPassingMarks" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="PracticalFullMarks" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="ClassSubject_ExamFullMark" Member="ClassSubject" ThisKey="ClassSubjectId" OtherKey="ClassSubjectId" Type="ClassSubject" IsForeignKey="true" />
+      <Association Name="ExamType_ExamFullMark" Member="ExamType" ThisKey="ExamTypeId" OtherKey="ExamTypeId" Type="ExamType" IsForeignKey="true" />
+      <Association Name="StaffLogin_ExamFullMark" Member="StaffLogin" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="StaffLogin_ExamFullMark1" Member="StaffLogin1" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ExamType" Member="ExamTypes">
+    <Type Name="ExamType">
+      <Column Name="ExamTypeId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ExamTypeName" Type="System.String" DbType="NVarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="ShortName" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Association Name="ExamType_ExamFullMark" Member="ExamFullMarks" ThisKey="ExamTypeId" OtherKey="ExamTypeId" Type="ExamFullMark" />
+    </Type>
+  </Table>
+  <Table Name="dbo.FeeAdmission" Member="FeeAdmissions">
+    <Type Name="FeeAdmission">
+      <Column Name="FeeAdmissionId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="FeeAdmissionHeadId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FeeAmount" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="Remarks" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="IsCompulsory" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsActive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsRefundable" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="FeeAdmissionHead_FeeAdmission" Member="FeeAdmissionHead" ThisKey="FeeAdmissionHeadId" OtherKey="FeeAdmissionHeadId" Type="FeeAdmissionHead" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="StaffLogin_FeeAdmission" Member="StaffLogin" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="StaffLogin_FeeAdmission1" Member="StaffLogin1" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.FeeAdmissionHead" Member="FeeAdmissionHeads">
+    <Type Name="FeeAdmissionHead">
+      <Column Name="FeeAdmissionHeadId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="AdmissionType" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="HeadId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SessionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ClassId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PupilTypeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="FeeAdmissionHead_FeeAdmission" Member="FeeAdmissions" ThisKey="FeeAdmissionHeadId" OtherKey="FeeAdmissionHeadId" Type="FeeAdmission" />
+      <Association Name="PupilType_FeeAdmissionHead" Member="PupilType" ThisKey="PupilTypeId" OtherKey="PupilTypeId" Type="PupilType" IsForeignKey="true" />
+      <Association Name="Session_FeeAdmissionHead" Member="Session" ThisKey="SessionId" OtherKey="SessionId" Type="Session" IsForeignKey="true" />
+      <Association Name="StaffLogin_FeeAdmissionHead" Member="StaffLogin" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.FeeClass" Member="FeeClasses">
+    <Type Name="FeeClass">
+      <Column Name="FeeClassId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="FeeClassHeadId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FeeAmount" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="Remarks" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="IsActive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsCompulsory" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsRefundable" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="FeeClass_PupilWaiveOff" Member="PupilWaiveOffs" ThisKey="FeeClassId" OtherKey="FeeClassId" Type="PupilWaiveOff" />
+      <Association Name="FeeClassHead_FeeClass" Member="FeeClassHead" ThisKey="FeeClassHeadId" OtherKey="FeeClassHeadId" Type="FeeClassHead" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="StaffLogin_FeeClass" Member="StaffLogin" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="StaffLogin_FeeClass1" Member="StaffLogin1" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.FeeClassHead" Member="FeeClassHeads">
+    <Type Name="FeeClassHead">
+      <Column Name="FeeClassHeadId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="MonthId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="HeadId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SessionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ClassId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PupilTypeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="FeeClassHead_FeeClass" Member="FeeClasses" ThisKey="FeeClassHeadId" OtherKey="FeeClassHeadId" Type="FeeClass" />
+      <Association Name="Class_FeeClassHead" Member="Class" ThisKey="ClassId" OtherKey="ClassId" Type="Class" IsForeignKey="true" />
+      <Association Name="Head_FeeClassHead" Member="Head" ThisKey="HeadId" OtherKey="HeadId" Type="Head" IsForeignKey="true" />
+      <Association Name="PupilType_FeeClassHead" Member="PupilType" ThisKey="PupilTypeId" OtherKey="PupilTypeId" Type="PupilType" IsForeignKey="true" />
+      <Association Name="Session_FeeClassHead" Member="Session" ThisKey="SessionId" OtherKey="SessionId" Type="Session" IsForeignKey="true" />
+      <Association Name="StaffLogin_FeeClassHead" Member="StaffLogin" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.FeePayment" Member="FeePayments">
+    <Type Name="FeePayment">
+      <Column Name="FeePaymentId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ReceiptNo" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="RegistrationId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PupilAdmissionId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SessionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PaymentFor" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="PaymentDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="PaymentConfirmDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="PaymentDetail" Type="System.String" DbType="NVarChar(350)" CanBeNull="true" />
+      <Column Name="PaymentMode" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="ChequeNo" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="ChequeDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="ChequeBank" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="ChequeBankBranch" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="TransactionNo" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="FeeAmount" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="WaiveOffAmount" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="TotalAmount" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="PaidAmount" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="PaidMonths" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="PaidPeriod" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="Remarks" Type="System.String" DbType="NVarChar(550)" CanBeNull="true" />
+      <Column Name="RemarksOnWaiveOff" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="FeePaymentStatus" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Association Name="FeePayment_FeePaymentDetail" Member="FeePaymentDetails" ThisKey="FeePaymentId" OtherKey="FeePaymentId" Type="FeePaymentDetail" />
+      <Association Name="FeePayment_FeePaymentMonth" Member="FeePaymentMonths" ThisKey="FeePaymentId" OtherKey="FeePaymentId" Type="FeePaymentMonth" />
+      <Association Name="FeePayment_FeeRemark" Member="FeeRemarks" ThisKey="FeePaymentId" OtherKey="FeePaymentId" Type="FeeRemark" />
+      <Association Name="PupilAdmission_FeePayment" Member="PupilAdmission" ThisKey="PupilAdmissionId" OtherKey="PupilAdmissionId" Type="PupilAdmission" IsForeignKey="true" />
+      <Association Name="Registration_FeePayment" Member="Registration" ThisKey="RegistrationId" OtherKey="RegistrationId" Type="Registration" IsForeignKey="true" />
+      <Association Name="Session_FeePayment" Member="Session" ThisKey="SessionId" OtherKey="SessionId" Type="Session" IsForeignKey="true" />
+      <Association Name="StaffLogin_FeePayment" Member="StaffLogin" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="StaffLogin_FeePayment1" Member="StaffLogin1" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.FeePaymentDetail" Member="FeePaymentDetails">
+    <Type Name="FeePaymentDetail">
+      <Column Name="FeePaymentDetailId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="FeePaymentId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="HeadId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="HeadName" Type="System.String" DbType="NVarChar(150) NOT NULL" CanBeNull="false" />
+      <Column Name="FeeFor" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="FeeAmount" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="WaiveOffAmount" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="TotalAmount" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="Remarks" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="FeePaymentDetail_PupilWaiveOff" Member="PupilWaiveOffs" ThisKey="FeePaymentDetailId" OtherKey="FeePaymentDetailId" Type="PupilWaiveOff" />
+      <Association Name="FeePayment_FeePaymentDetail" Member="FeePayment" ThisKey="FeePaymentId" OtherKey="FeePaymentId" Type="FeePayment" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Head_FeePaymentDetail" Member="Head" ThisKey="HeadId" OtherKey="HeadId" Type="Head" IsForeignKey="true" />
+      <Association Name="StaffLogin_FeePaymentDetail" Member="StaffLogin" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.FeePaymentMonth" Member="FeePaymentMonths">
+    <Type Name="FeePaymentMonth">
+      <Column Name="FeePaymentMonthId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="FeePaymentId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PupilAdmissionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MonthId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="FeePayment_FeePaymentMonth" Member="FeePayment" ThisKey="FeePaymentId" OtherKey="FeePaymentId" Type="FeePayment" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Month_FeePaymentMonth" Member="Month" ThisKey="MonthId" OtherKey="MonthId" Type="Month" IsForeignKey="true" />
+      <Association Name="PupilAdmission_FeePaymentMonth" Member="PupilAdmission" ThisKey="PupilAdmissionId" OtherKey="PupilAdmissionId" Type="PupilAdmission" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.FeeRegistration" Member="FeeRegistrations">
+    <Type Name="FeeRegistration">
+      <Column Name="FeeRegistrationId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="RegistrationFormId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="HeadId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FeeAmount" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="SameSchoolFeeAmount" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="IsActive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Head_FeeRegistration" Member="Head" ThisKey="HeadId" OtherKey="HeadId" Type="Head" IsForeignKey="true" />
+      <Association Name="RegistrationForm_FeeRegistration" Member="RegistrationForm" ThisKey="RegistrationFormId" OtherKey="RegistrationFormId" Type="RegistrationForm" IsForeignKey="true" />
+      <Association Name="StaffLogin_FeeRegistration" Member="StaffLogin" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="StaffLogin_FeeRegistration1" Member="StaffLogin1" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.FeeRegistrationHead" Member="FeeRegistrationHeads">
+    <Type Name="FeeRegistrationHead">
+      <Column Name="FeeRegistrationHeadId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="HeadId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Head_FeeRegistrationHead" Member="Head" ThisKey="HeadId" OtherKey="HeadId" Type="Head" IsForeignKey="true" />
+      <Association Name="StaffLogin_FeeRegistrationHead" Member="StaffLogin" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.FeeRemarks" Member="FeeRemarks">
+    <Type Name="FeeRemark">
+      <Column Name="FeeRemarksId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PupilId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FeePaymentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Reamarks" Type="System.String" DbType="NVarChar(550) NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="FeePayment_FeeRemark" Member="FeePayment" ThisKey="FeePaymentId" OtherKey="FeePaymentId" Type="FeePayment" IsForeignKey="true" />
+      <Association Name="Pupil_FeeRemark" Member="Pupil" ThisKey="PupilId" OtherKey="PupilId" Type="Pupil" IsForeignKey="true" />
+      <Association Name="StaffLogin_FeeRemark" Member="StaffLogin" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.FeeSubjectOption" Member="FeeSubjectOptions">
+    <Type Name="FeeSubjectOption">
+      <Column Name="FeeSubjectOptionId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="FeeSubjectOptionHeadId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SubjectOptionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FeeAmount" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="IsCompulsory" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsActive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Remarks" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="FeeSubjectOptionHead_FeeSubjectOption" Member="FeeSubjectOptionHead" ThisKey="FeeSubjectOptionHeadId" OtherKey="FeeSubjectOptionHeadId" Type="FeeSubjectOptionHead" IsForeignKey="true" />
+      <Association Name="StaffLogin_FeeSubjectOption" Member="StaffLogin" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="StaffLogin_FeeSubjectOption1" Member="StaffLogin1" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="SubjectOption_FeeSubjectOption" Member="SubjectOption" ThisKey="SubjectOptionId" OtherKey="SubjectOptionId" Type="SubjectOption" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.FeeSubjectOptionHead" Member="FeeSubjectOptionHeads">
+    <Type Name="FeeSubjectOptionHead">
+      <Column Name="FeeSubjectOptionHeadId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="HeadId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="FeeSubjectOptionHead_FeeSubjectOption" Member="FeeSubjectOptions" ThisKey="FeeSubjectOptionHeadId" OtherKey="FeeSubjectOptionHeadId" Type="FeeSubjectOption" />
+      <Association Name="Head_FeeSubjectOptionHead" Member="Head" ThisKey="HeadId" OtherKey="HeadId" Type="Head" IsForeignKey="true" />
+      <Association Name="StaffLogin_FeeSubjectOptionHead" Member="StaffLogin" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.FeeTransport" Member="FeeTransports">
+    <Type Name="FeeTransport">
+      <Column Name="FeeTransportId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="FeeTransportHeadId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TransportBatchId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TransportDurationId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FeeAmount" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="IsCompulsory" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsActive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Remarks" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="FeeTransportHead_FeeTransport" Member="FeeTransportHead" ThisKey="FeeTransportHeadId" OtherKey="FeeTransportHeadId" Type="FeeTransportHead" IsForeignKey="true" />
+      <Association Name="StaffLogin_FeeTransport" Member="StaffLogin" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="StaffLogin_FeeTransport1" Member="StaffLogin1" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="TransportBatch_FeeTransport" Member="TransportBatch" ThisKey="TransportBatchId" OtherKey="TransportBatchId" Type="TransportBatch" IsForeignKey="true" />
+      <Association Name="TransportDuration_FeeTransport" Member="TransportDuration" ThisKey="TransportDurationId" OtherKey="TransportDurationId" Type="TransportDuration" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.FeeTransportHead" Member="FeeTransportHeads">
+    <Type Name="FeeTransportHead">
+      <Column Name="FeeTransportHeadId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="HeadId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="FeeTransportHead_FeeTransport" Member="FeeTransports" ThisKey="FeeTransportHeadId" OtherKey="FeeTransportHeadId" Type="FeeTransport" />
+      <Association Name="Head_FeeTransportHead" Member="Head" ThisKey="HeadId" OtherKey="HeadId" Type="Head" IsForeignKey="true" />
+      <Association Name="StaffLogin_FeeTransportHead" Member="StaffLogin" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Grade" Member="Grades">
+    <Type Name="Grade">
+      <Column Name="GradeId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="GradeNo" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="GradeName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="Grade_PupilGrade" Member="PupilGrades" ThisKey="GradeId" OtherKey="GradeId" Type="PupilGrade" />
+    </Type>
+  </Table>
+  <Table Name="dbo.GradeGroup" Member="GradeGroups">
+    <Type Name="GradeGroup">
+      <Column Name="GradeGroupId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="GradeGroupName" Type="System.String" DbType="NVarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="StaffLogin_GradeGroup" Member="StaffLogin" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.GradingScale" Member="GradingScales">
+    <Type Name="GradingScale">
+      <Column Name="GradingScaleId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="GradingScaleName" Type="System.String" DbType="NVarChar(150) NOT NULL" CanBeNull="false" />
+      <Column Name="UpToGradeNo" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="GradingScale_SubjectGradingScale" Member="SubjectGradingScales" ThisKey="GradingScaleId" OtherKey="GradingScaleId" Type="SubjectGradingScale" />
+    </Type>
+  </Table>
+  <Table Name="dbo.GradingSystem" Member="GradingSystems">
+    <Type Name="GradingSystem">
+      <Column Name="GradingSystemId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ClassId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SessionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FromMarks" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="ToMarks" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="GradeName" Type="System.String" DbType="NVarChar(5) NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Class_GradingSystem" Member="Class" ThisKey="ClassId" OtherKey="ClassId" Type="Class" IsForeignKey="true" />
+      <Association Name="Session_GradingSystem" Member="Session" ThisKey="SessionId" OtherKey="SessionId" Type="Session" IsForeignKey="true" />
+      <Association Name="StaffLogin_GradingSystem" Member="StaffLogin" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="StaffLogin_GradingSystem1" Member="StaffLogin1" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Head" Member="Heads">
+    <Type Name="Head">
+      <Column Name="HeadId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="HeadName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="IsCompulsory" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Head_FeeClassHead" Member="FeeClassHeads" ThisKey="HeadId" OtherKey="HeadId" Type="FeeClassHead" />
+      <Association Name="Head_FeePaymentDetail" Member="FeePaymentDetails" ThisKey="HeadId" OtherKey="HeadId" Type="FeePaymentDetail" />
+      <Association Name="Head_FeeRegistration" Member="FeeRegistrations" ThisKey="HeadId" OtherKey="HeadId" Type="FeeRegistration" />
+      <Association Name="Head_FeeRegistrationHead" Member="FeeRegistrationHeads" ThisKey="HeadId" OtherKey="HeadId" Type="FeeRegistrationHead" />
+      <Association Name="Head_FeeSubjectOptionHead" Member="FeeSubjectOptionHeads" ThisKey="HeadId" OtherKey="HeadId" Type="FeeSubjectOptionHead" />
+      <Association Name="Head_FeeTransportHead" Member="FeeTransportHeads" ThisKey="HeadId" OtherKey="HeadId" Type="FeeTransportHead" />
+      <Association Name="Head_PupilCharge" Member="PupilCharges" ThisKey="HeadId" OtherKey="HeadId" Type="PupilCharge" />
+      <Association Name="StaffLogin_Head" Member="StaffLogin" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Language" Member="Languages">
+    <Type Name="Language">
+      <Column Name="LanguageId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="LanguageName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Association Name="Language_PurchaseMagazine" Member="PurchaseMagazines" ThisKey="LanguageId" OtherKey="LanguageId" Type="PurchaseMagazine" />
+    </Type>
+  </Table>
+  <Table Name="dbo.LoginLog" Member="LoginLogs">
+    <Type Name="LoginLog">
+      <Column Name="LoginLogId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="UserName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="LoginPassword" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="ClientBrowser" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="LoginDevice" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="IPAddress" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="ReferrerUrl" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="LoginResult" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="LoginTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="LastUpdatedOn" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UserType" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="GoogleLocation" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="IMEINo" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Magazine" Member="Magazines">
+    <Type Name="Magazine">
+      <Column Name="MagazineId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="MagazineName" Type="System.String" DbType="NVarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="Rate" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Magazine_PurchaseMagazine" Member="PurchaseMagazines" ThisKey="MagazineId" OtherKey="MagazineId" Type="PurchaseMagazine" />
+      <Association Name="StaffLogin_Magazine" Member="StaffLogin" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Menu" Member="Menus">
+    <Type Name="Menu">
+      <Column Name="MenuId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="MenuTitle" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="PageId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="MenuNo" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ParentMenuId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="MenuIcon" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Association Name="Menu_Menu" Member="Menus" ThisKey="MenuId" OtherKey="ParentMenuId" Type="Menu" />
+      <Association Name="Menu_RoleMenu" Member="RoleMenus" ThisKey="MenuId" OtherKey="MenuId" Type="RoleMenu" />
+      <Association Name="Menu_Menu" Member="Menu1" ThisKey="ParentMenuId" OtherKey="MenuId" Type="Menu" IsForeignKey="true" />
+      <Association Name="Page_Menu" Member="Page" ThisKey="PageId" OtherKey="PageId" Type="Page" IsForeignKey="true" />
+      <Association Name="StaffLogin_Menu" Member="StaffLogin" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Month" Member="Months">
+    <Type Name="Month">
+      <Column Name="MonthId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="MonthName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ShortName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Position" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Month_FeePaymentMonth" Member="FeePaymentMonths" ThisKey="MonthId" OtherKey="MonthId" Type="FeePaymentMonth" />
+    </Type>
+  </Table>
+  <Table Name="dbo.NewsPaper" Member="NewsPapers">
+    <Type Name="NewsPaper">
+      <Column Name="NewsPaperId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="NewsPaperName" Type="System.String" DbType="NVarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="Rate" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="NewsPaper_PurchaseNewsPaper" Member="PurchaseNewsPapers" ThisKey="NewsPaperId" OtherKey="NewsPaperId" Type="PurchaseNewsPaper" />
+      <Association Name="StaffLogin_NewsPaper" Member="StaffLogin" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Page" Member="Pages">
+    <Type Name="Page">
+      <Column Name="PageId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PageGroupId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PageName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="PageUrl" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Association Name="Page_Menu" Member="Menus" ThisKey="PageId" OtherKey="PageId" Type="Menu" />
+      <Association Name="PageGroup_Page" Member="PageGroup" ThisKey="PageGroupId" OtherKey="PageGroupId" Type="PageGroup" IsForeignKey="true" />
+      <Association Name="StaffLogin_Page" Member="StaffLogin" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PageGroup" Member="PageGroups">
+    <Type Name="PageGroup">
+      <Column Name="PageGroupId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PageGroupName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Association Name="PageGroup_Page" Member="Pages" ThisKey="PageGroupId" OtherKey="PageGroupId" Type="Page" />
+      <Association Name="StaffLogin_PageGroup" Member="StaffLogin" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Pupil" Member="Pupils">
+    <Type Name="Pupil">
+      <Column Name="PupilId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PupilTypeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AdmissionNo" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="PupilName" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="DOB" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="Gender" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="FatherName" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="FatherOccupation" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="MotherName" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="MotherOccupation" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="FamilyAnnualIncome" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="GuardianMobileNo" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="CorrespondenceAddress" Type="System.String" DbType="NVarChar(550)" CanBeNull="true" />
+      <Column Name="CorrespondenceCityId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CorrespondencePinCode" Type="System.String" DbType="NVarChar(6)" CanBeNull="true" />
+      <Column Name="PermanentAddress" Type="System.String" DbType="NVarChar(550)" CanBeNull="true" />
+      <Column Name="PermanentCityId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PermanentPinCode" Type="System.String" DbType="NVarChar(6)" CanBeNull="true" />
+      <Column Name="Category" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="BloodGroup" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="Religion" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="Nationality" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="MobileNo" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="AlternateNo" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="AadhaarNo" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="PreviousSchoolName" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="PreviousSchoolBoard" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="PreviousSchoolClass" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="PreviousSchoolMedium" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="PreviousSchoolTCNo" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="PreviousSchoolTCDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="Remarks" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="StudentPhoto" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="LoginPassword" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="PupilStatus" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="JoinDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Pupil_FeeRemark" Member="FeeRemarks" ThisKey="PupilId" OtherKey="PupilId" Type="FeeRemark" />
+      <Association Name="Pupil_PupilAdmission" Member="PupilAdmissions" ThisKey="PupilId" OtherKey="PupilId" Type="PupilAdmission" />
+      <Association Name="Pupil_PupilCharge" Member="PupilCharges" ThisKey="PupilId" OtherKey="PupilId" Type="PupilCharge" />
+      <Association Name="Pupil_TransportPupil" Member="TransportPupils" ThisKey="PupilId" OtherKey="PupilId" Type="TransportPupil" />
+      <Association Name="PupilType_Pupil" Member="PupilType" ThisKey="PupilTypeId" OtherKey="PupilTypeId" Type="PupilType" IsForeignKey="true" />
+      <Association Name="StaffLogin_Pupil" Member="StaffLogin" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="StaffLogin_Pupil1" Member="StaffLogin1" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PupilAdmission" Member="PupilAdmissions">
+    <Type Name="PupilAdmission">
+      <Column Name="PupilAdmissionId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PupilId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AdmissionType" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SessionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RollNo" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AdmissionDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="LeaveDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="Height" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Weight" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="PupilAdmissionStatus" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="PupilAdmission_FeePayment" Member="FeePayments" ThisKey="PupilAdmissionId" OtherKey="PupilAdmissionId" Type="FeePayment" />
+      <Association Name="PupilAdmission_FeePaymentMonth" Member="FeePaymentMonths" ThisKey="PupilAdmissionId" OtherKey="PupilAdmissionId" Type="FeePaymentMonth" />
+      <Association Name="PupilAdmission_PupilAttendance" Member="PupilAttendances" ThisKey="PupilAdmissionId" OtherKey="PupilAdmissionId" Type="PupilAttendance" />
+      <Association Name="PupilAdmission_PupilGrade" Member="PupilGrades" ThisKey="PupilAdmissionId" OtherKey="PupilAdmissionId" Type="PupilGrade" />
+      <Association Name="PupilAdmission_PupilSubject" Member="PupilSubjects" ThisKey="PupilAdmissionId" OtherKey="PupilAdmissionId" Type="PupilSubject" />
+      <Association Name="PupilAdmission_PupilWaiveOff" Member="PupilWaiveOffs" ThisKey="PupilAdmissionId" OtherKey="PupilAdmissionId" Type="PupilWaiveOff" />
+      <Association Name="Pupil_PupilAdmission" Member="Pupil" ThisKey="PupilId" OtherKey="PupilId" Type="Pupil" IsForeignKey="true" />
+      <Association Name="Section_PupilAdmission" Member="Section" ThisKey="SectionId" OtherKey="SectionId" Type="Section" IsForeignKey="true" />
+      <Association Name="Session_PupilAdmission" Member="Session" ThisKey="SessionId" OtherKey="SessionId" Type="Session" IsForeignKey="true" />
+      <Association Name="StaffLogin_PupilAdmission" Member="StaffLogin" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="StaffLogin_PupilAdmission1" Member="StaffLogin1" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PupilAttendance" Member="PupilAttendances">
+    <Type Name="PupilAttendance">
+      <Column Name="PupilAttendanceId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PupilAdmissionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="HyPresentDays" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AnPresentDays" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ClassAttendanceId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="ClassAttendance_PupilAttendance" Member="ClassAttendance" ThisKey="ClassAttendanceId" OtherKey="ClassAttendanceId" Type="ClassAttendance" IsForeignKey="true" />
+      <Association Name="PupilAdmission_PupilAttendance" Member="PupilAdmission" ThisKey="PupilAdmissionId" OtherKey="PupilAdmissionId" Type="PupilAdmission" IsForeignKey="true" />
+      <Association Name="StaffLogin_PupilAttendance" Member="StaffLogin" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="StaffLogin_PupilAttendance1" Member="StaffLogin1" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PupilCharge" Member="PupilCharges">
+    <Type Name="PupilCharge">
+      <Column Name="PupilChargeId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PupilId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="HeadId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FeeFor" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="FeeAmount" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="ChargeDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="IsCompulsory" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Remarks" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Head_PupilCharge" Member="Head" ThisKey="HeadId" OtherKey="HeadId" Type="Head" IsForeignKey="true" />
+      <Association Name="Pupil_PupilCharge" Member="Pupil" ThisKey="PupilId" OtherKey="PupilId" Type="Pupil" IsForeignKey="true" />
+      <Association Name="StaffLogin_PupilCharge" Member="StaffLogin" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="StaffLogin_PupilCharge1" Member="StaffLogin1" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PupilGrade" Member="PupilGrades">
+    <Type Name="PupilGrade">
+      <Column Name="PupilGradeId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PupilAdmissionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SubjectGradingScaleId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="GradeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Grade_PupilGrade" Member="Grade" ThisKey="GradeId" OtherKey="GradeId" Type="Grade" IsForeignKey="true" />
+      <Association Name="PupilAdmission_PupilGrade" Member="PupilAdmission" ThisKey="PupilAdmissionId" OtherKey="PupilAdmissionId" Type="PupilAdmission" IsForeignKey="true" />
+      <Association Name="StaffLogin_PupilGrade" Member="StaffLogin" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="StaffLogin_PupilGrade1" Member="StaffLogin1" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="SubjectGradingScale_PupilGrade" Member="SubjectGradingScale" ThisKey="SubjectGradingScaleId" OtherKey="SubjectGradingScaleId" Type="SubjectGradingScale" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PupilMark" Member="PupilMarks">
+    <Type Name="PupilMark">
+      <Column Name="PupilMarkId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PupilSubjectId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SubjectFullMarkId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TheoryMO" Type="System.Decimal" DbType="Decimal(18,1) NOT NULL" CanBeNull="false" />
+      <Column Name="PracticalMO" Type="System.Decimal" DbType="Decimal(18,1) NOT NULL" CanBeNull="false" />
+      <Column Name="Aggregate" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Percentage" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="Rank" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IsPass" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="PupilSubject_PupilMark" Member="PupilSubject" ThisKey="PupilSubjectId" OtherKey="PupilSubjectId" Type="PupilSubject" IsForeignKey="true" />
+      <Association Name="StaffLogin_PupilMark" Member="StaffLogin" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="StaffLogin_PupilMark1" Member="StaffLogin1" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="SubjectFullMark_PupilMark" Member="SubjectFullMark" ThisKey="SubjectFullMarkId" OtherKey="SubjectFullMarksId" Type="SubjectFullMark" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PupilSubject" Member="PupilSubjects">
+    <Type Name="PupilSubject">
+      <Column Name="PupilSubjectId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PupilAdmissionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ClassSubjectId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SubjectNo" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IsOptional" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="PupilSubject_PupilMark" Member="PupilMarks" ThisKey="PupilSubjectId" OtherKey="PupilSubjectId" Type="PupilMark" />
+      <Association Name="ClassSubject_PupilSubject" Member="ClassSubject" ThisKey="ClassSubjectId" OtherKey="ClassSubjectId" Type="ClassSubject" IsForeignKey="true" />
+      <Association Name="PupilAdmission_PupilSubject" Member="PupilAdmission" ThisKey="PupilAdmissionId" OtherKey="PupilAdmissionId" Type="PupilAdmission" IsForeignKey="true" />
+      <Association Name="StaffLogin_PupilSubject" Member="StaffLogin" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="StaffLogin_PupilSubject1" Member="StaffLogin1" ThisKey="UpatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PupilType" Member="PupilTypes">
+    <Type Name="PupilType">
+      <Column Name="PupilTypeId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PupilTypeName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="PupilType_FeeAdmissionHead" Member="FeeAdmissionHeads" ThisKey="PupilTypeId" OtherKey="PupilTypeId" Type="FeeAdmissionHead" />
+      <Association Name="PupilType_FeeClassHead" Member="FeeClassHeads" ThisKey="PupilTypeId" OtherKey="PupilTypeId" Type="FeeClassHead" />
+      <Association Name="PupilType_Pupil" Member="Pupils" ThisKey="PupilTypeId" OtherKey="PupilTypeId" Type="Pupil" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PupilWaiveOff" Member="PupilWaiveOffs">
+    <Type Name="PupilWaiveOff">
+      <Column Name="PupilWaiveOffId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PupilAdmissionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FeeClassId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="WaiveOffAmount" Type="System.Decimal" DbType="Money NOT NULL" CanBeNull="false" />
+      <Column Name="Remarks" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="FeePaymentDetailId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="FeeClass_PupilWaiveOff" Member="FeeClass" ThisKey="FeeClassId" OtherKey="FeeClassId" Type="FeeClass" IsForeignKey="true" />
+      <Association Name="FeePaymentDetail_PupilWaiveOff" Member="FeePaymentDetail" ThisKey="FeePaymentDetailId" OtherKey="FeePaymentDetailId" Type="FeePaymentDetail" IsForeignKey="true" />
+      <Association Name="PupilAdmission_PupilWaiveOff" Member="PupilAdmission" ThisKey="PupilAdmissionId" OtherKey="PupilAdmissionId" Type="PupilAdmission" IsForeignKey="true" />
+      <Association Name="StaffLogin_PupilWaiveOff" Member="StaffLogin" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="StaffLogin_PupilWaiveOff1" Member="StaffLogin1" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Purchase" Member="Purchases">
+    <Type Name="Purchase">
+      <Column Name="PurchaseId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SupplierId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="InvoiceNo" Type="System.String" DbType="NVarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="InvoiceDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="BaseAmount" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="DiscountAmount" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="TaxableAmount" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="CGSTAmount" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="SGSTAmount" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="IGSTAmount" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="GrossAmount" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="StaffLogin_Purchase" Member="StaffLogin" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="StaffLogin_Purchase1" Member="StaffLogin1" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="Supplier_Purchase" Member="Supplier" ThisKey="SupplierId" OtherKey="SupplierId" Type="Supplier" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PurchaseBook" Member="PurchaseBooks">
+    <Type Name="PurchaseBook">
+      <Column Name="PurchaseBookId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PurchaseId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="BookId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Rate" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="Quantity" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Column Name="BaseAmount" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="DiscountPercentage" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="DiscountAmount" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="TaxableAmount" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="GSTPercentage" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Column Name="CGSTAmount" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="SGSTAmount" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="IGSTAmount" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="TotalAmount" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="PurchaseBook_BookDetail" Member="BookDetails" ThisKey="PurchaseBookId" OtherKey="PurchaseBookId" Type="BookDetail" />
+      <Association Name="StaffLogin_PurchaseBook" Member="StaffLogin" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="StaffLogin_PurchaseBook1" Member="StaffLogin1" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PurchaseMagazine" Member="PurchaseMagazines">
+    <Type Name="PurchaseMagazine">
+      <Column Name="PurchaseMagazineId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="MagazineId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PublicDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="ReceiveDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="LanguageId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ReceiveSource" Type="System.String" DbType="NVarChar(150) NOT NULL" CanBeNull="false" />
+      <Column Name="Rate" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="Remarks" Type="System.String" DbType="NVarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Language_PurchaseMagazine" Member="Language" ThisKey="LanguageId" OtherKey="LanguageId" Type="Language" IsForeignKey="true" />
+      <Association Name="Magazine_PurchaseMagazine" Member="Magazine" ThisKey="MagazineId" OtherKey="MagazineId" Type="Magazine" IsForeignKey="true" />
+      <Association Name="StaffLogin_PurchaseMagazine" Member="StaffLogin" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="StaffLogin_PurchaseMagazine1" Member="StaffLogin1" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PurchaseNewsPaper" Member="PurchaseNewsPapers">
+    <Type Name="PurchaseNewsPaper">
+      <Column Name="PurchaseNewsPaperId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="NewsPaperId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PurchaseDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="PurchaseNewsPaper_PurchaseNewsPaper" Member="PurchaseNewsPaper2" ThisKey="PurchaseNewsPaperId" OtherKey="PurchaseNewsPaperId" Type="PurchaseNewsPaper" Cardinality="One" />
+      <Association Name="NewsPaper_PurchaseNewsPaper" Member="NewsPaper" ThisKey="NewsPaperId" OtherKey="NewsPaperId" Type="NewsPaper" IsForeignKey="true" />
+      <Association Name="PurchaseNewsPaper_PurchaseNewsPaper" Member="PurchaseNewsPaper1" ThisKey="PurchaseNewsPaperId" OtherKey="PurchaseNewsPaperId" Type="PurchaseNewsPaper" IsForeignKey="true" />
+      <Association Name="StaffLogin_PurchaseNewsPaper" Member="StaffLogin" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="StaffLogin_PurchaseNewsPaper1" Member="StaffLogin1" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Rack" Member="Racks">
+    <Type Name="Rack">
+      <Column Name="RackId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="RackNo" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Association Name="Rack_BookRack" Member="BookRacks" ThisKey="RackId" OtherKey="RackId" Type="BookRack" />
+      <Association Name="StaffLogin_Rack" Member="StaffLogin" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Registration" Member="Registrations">
+    <Type Name="Registration">
+      <Column Name="RegistrationId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="RegistrationFormId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SessionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ClassId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PupilAdmissionIdd" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RegistrationNo" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="RegistrationDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="PupilName" Type="System.String" DbType="NVarChar(150) NOT NULL" CanBeNull="false" />
+      <Column Name="DOB" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="Gender" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="FatherName" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="FatherOccupation" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="MotherName" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="MotherOccupation" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="FamilyAnnualIncome" Type="System.Decimal" DbType="Money" CanBeNull="true" />
+      <Column Name="GuardianMobileNo" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="CorrespondenceAddress" Type="System.String" DbType="NVarChar(550)" CanBeNull="true" />
+      <Column Name="CorrespondenceCityId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CorrespondencePinCode" Type="System.String" DbType="NVarChar(6)" CanBeNull="true" />
+      <Column Name="PermanentAddress" Type="System.String" DbType="NVarChar(550)" CanBeNull="true" />
+      <Column Name="PermanentCityId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PermanentPinCode" Type="System.String" DbType="NVarChar(6)" CanBeNull="true" />
+      <Column Name="Category" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="BloodGroup" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="Religion" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="Nationality" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="MobileNo" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="AlternateNo" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="AadhaarNo" Type="System.String" DbType="NVarChar(12)" CanBeNull="true" />
+      <Column Name="PreviousSchoolName" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="PreviousSchoolBoard" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="PreviousSchoolMedium" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="PreviousSchoolClass" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="StudentSingnature" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="StudentPhoto" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="FatherPhoto" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="MotherPhoto" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="IsSameSchool" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="RegistrationStatus" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Registration_FeePayment" Member="FeePayments" ThisKey="RegistrationId" OtherKey="RegistrationId" Type="FeePayment" />
+      <Association Name="Class_Registration" Member="Class" ThisKey="ClassId" OtherKey="ClassId" Type="Class" IsForeignKey="true" />
+      <Association Name="RegistrationForm_Registration" Member="RegistrationForm" ThisKey="RegistrationFormId" OtherKey="RegistrationFormId" Type="RegistrationForm" IsForeignKey="true" />
+      <Association Name="Session_Registration" Member="Session" ThisKey="SessionId" OtherKey="SessionId" Type="Session" IsForeignKey="true" />
+      <Association Name="StaffLogin_Registration" Member="StaffLogin" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="StaffLogin_Registration1" Member="StaffLogin1" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.RegistrationForm" Member="RegistrationForms">
+    <Type Name="RegistrationForm">
+      <Column Name="RegistrationFormId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SessionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ClassId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Title" Type="System.String" DbType="NVarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="StartDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="EndDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="FromDOB" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="ToDOB" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="StudentSingnatureRequired" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="StudentPhotoRequired" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="FatherPhotoRequired" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="MotherPhotoRequired" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="FormFor" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="ThumbnailPhoto" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="RegistrationForm_FeeRegistration" Member="FeeRegistrations" ThisKey="RegistrationFormId" OtherKey="RegistrationFormId" Type="FeeRegistration" />
+      <Association Name="RegistrationForm_Registration" Member="Registrations" ThisKey="RegistrationFormId" OtherKey="RegistrationFormId" Type="Registration" />
+      <Association Name="Class_RegistrationForm" Member="Class" ThisKey="ClassId" OtherKey="ClassId" Type="Class" IsForeignKey="true" />
+      <Association Name="Session_RegistrationForm" Member="Session" ThisKey="SessionId" OtherKey="SessionId" Type="Session" IsForeignKey="true" />
+      <Association Name="StaffLogin_RegistrationForm" Member="StaffLogin" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="StaffLogin_RegistrationForm1" Member="StaffLogin1" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Role" Member="Roles">
+    <Type Name="Role">
+      <Column Name="RoleId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="RoleTitle" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Association Name="Role_RoleMenu" Member="RoleMenus" ThisKey="RoleId" OtherKey="RoleId" Type="RoleMenu" />
+      <Association Name="Role_StaffLoginRole" Member="StaffLoginRoles" ThisKey="RoleId" OtherKey="RoleId" Type="StaffLoginRole" />
+      <Association Name="StaffLogin_Role" Member="StaffLogin" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.RoleMenu" Member="RoleMenus">
+    <Type Name="RoleMenu">
+      <Column Name="RoleMenuId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="RoleId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MenuId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="CanEdit" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CanDelete" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CanCreate" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="Menu_RoleMenu" Member="Menu" ThisKey="MenuId" OtherKey="MenuId" Type="Menu" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="Role_RoleMenu" Member="Role" ThisKey="RoleId" OtherKey="RoleId" Type="Role" IsForeignKey="true" />
+      <Association Name="StaffLogin_RoleMenu" Member="StaffLogin" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.School" Member="Schools">
+    <Type Name="School">
+      <Column Name="SchoolId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SchoolName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="ShortName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Location" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="FullAddress" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="SchoolSlogan" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="AffiliationDetail" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="AffiliationNo" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SchoolCode" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="WebsiteUrl" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="MobileNo" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="AlternateNo" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="LogoPng" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="LogoJpg" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Association Name="School_StaffLogin" Member="StaffLogins" ThisKey="SchoolId" OtherKey="SchoolId" Type="StaffLogin" />
+      <Association Name="School_TransportBatch" Member="TransportBatches" ThisKey="SchoolId" OtherKey="SchoolId" Type="TransportBatch" />
+      <Association Name="School_TransportDuration" Member="TransportDurations" ThisKey="SchoolId" OtherKey="SchoolId" Type="TransportDuration" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Section" Member="Sections">
+    <Type Name="Section">
+      <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ClassId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SectionName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Section_ClassAttendance" Member="ClassAttendances" ThisKey="SectionId" OtherKey="SectionId" Type="ClassAttendance" />
+      <Association Name="Section_PupilAdmission" Member="PupilAdmissions" ThisKey="SectionId" OtherKey="SectionId" Type="PupilAdmission" />
+      <Association Name="Section_StaffClass" Member="StaffClasses" ThisKey="SectionId" OtherKey="SectionId" Type="StaffClass" />
+      <Association Name="Class_Section" Member="Class" ThisKey="ClassId" OtherKey="ClassId" Type="Class" IsForeignKey="true" />
+      <Association Name="StaffLogin_Section" Member="StaffLogin" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Session" Member="Sessions">
+    <Type Name="Session">
+      <Column Name="SessionId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SessionName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="SessionStartDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="SessionEndDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Session_ClassAttendance" Member="ClassAttendances" ThisKey="SessionId" OtherKey="SectionId" Type="ClassAttendance" />
+      <Association Name="Session_ClassExam" Member="ClassExams" ThisKey="SessionId" OtherKey="SessionId" Type="ClassExam" />
+      <Association Name="Session_ClassFullMark" Member="ClassFullMarks" ThisKey="SessionId" OtherKey="SessionId" Type="ClassFullMark" />
+      <Association Name="Session_ClassSubject" Member="ClassSubjects" ThisKey="SessionId" OtherKey="SessionId" Type="ClassSubject" />
+      <Association Name="Session_FeeAdmissionHead" Member="FeeAdmissionHeads" ThisKey="SessionId" OtherKey="SessionId" Type="FeeAdmissionHead" />
+      <Association Name="Session_FeeClassHead" Member="FeeClassHeads" ThisKey="SessionId" OtherKey="SessionId" Type="FeeClassHead" />
+      <Association Name="Session_FeePayment" Member="FeePayments" ThisKey="SessionId" OtherKey="SessionId" Type="FeePayment" />
+      <Association Name="Session_GradingSystem" Member="GradingSystems" ThisKey="SessionId" OtherKey="SessionId" Type="GradingSystem" />
+      <Association Name="Session_PupilAdmission" Member="PupilAdmissions" ThisKey="SessionId" OtherKey="SessionId" Type="PupilAdmission" />
+      <Association Name="Session_Registration" Member="Registrations" ThisKey="SessionId" OtherKey="SessionId" Type="Registration" />
+      <Association Name="Session_RegistrationForm" Member="RegistrationForms" ThisKey="SessionId" OtherKey="SessionId" Type="RegistrationForm" />
+      <Association Name="Session_SubjectOption" Member="SubjectOptions" ThisKey="SessionId" OtherKey="SessionId" Type="SubjectOption" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Staff" Member="Staffs">
+    <Type Name="Staff">
+      <Column Name="StaffId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="StaffName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="StaffCode" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="DesignationId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="StaffType" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="FatherName" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="MobileNo" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="AlternateNo" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="Gender" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="StaffPhoto" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="Qualification" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="FullAddress" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="JoinDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="DepartmentId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="DOB" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Association Name="Staff_BookIssue" Member="BookIssues" ThisKey="StaffId" OtherKey="StaffId" Type="BookIssue" />
+      <Association Name="Staff_StaffClass" Member="StaffClasses" ThisKey="StaffId" OtherKey="StaffId" Type="StaffClass" />
+      <Association Name="Staff_StaffLogin" Member="StaffLogins" ThisKey="StaffId" OtherKey="StaffId" Type="StaffLogin" />
+      <Association Name="Department_Staff" Member="Department" ThisKey="DepartmentId" OtherKey="DepartmentId" Type="Department" IsForeignKey="true" />
+      <Association Name="Designation_Staff" Member="Designation" ThisKey="DesignationId" OtherKey="DesignationId" Type="Designation" IsForeignKey="true" />
+      <Association Name="StaffLogin_Staff" Member="StaffLogin" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.StaffClass" Member="StaffClasses">
+    <Type Name="StaffClass">
+      <Column Name="StaffClassId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="StaffId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SectionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="Section_StaffClass" Member="Section" ThisKey="SectionId" OtherKey="SectionId" Type="Section" IsForeignKey="true" />
+      <Association Name="Staff_StaffClass" Member="Staff" ThisKey="StaffId" OtherKey="StaffId" Type="Staff" IsForeignKey="true" />
+      <Association Name="StaffLogin_StaffClass" Member="StaffLogin" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.StaffLogin" Member="StaffLogins">
+    <Type Name="StaffLogin">
+      <Column Name="StaffLoginId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="StaffId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UserName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="LoginPassword" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="SchoolId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Association Name="StaffLogin_Book" Member="Books" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="Book" />
+      <Association Name="StaffLogin_Book1" Member="Books1" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="Book" />
+      <Association Name="StaffLogin_VehicleType" Member="VehicleTypes" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="VehicleType" />
+      <Association Name="StaffLogin_BookDetail" Member="BookDetails" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="BookDetail" />
+      <Association Name="StaffLogin_BookDetail1" Member="BookDetails1" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="BookDetail" />
+      <Association Name="StaffLogin_BookFine" Member="BookFines" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="BookFine" />
+      <Association Name="StaffLogin_BookFine1" Member="BookFines1" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="BookFine" />
+      <Association Name="StaffLogin_BookIssue" Member="BookIssues" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="BookIssue" />
+      <Association Name="StaffLogin_BookIssue1" Member="BookIssues1" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="BookIssue" />
+      <Association Name="StaffLogin_BookRack" Member="BookRacks" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="BookRack" />
+      <Association Name="StaffLogin_BookType" Member="BookTypes" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="BookType" />
+      <Association Name="StaffLogin_City" Member="Cities" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="City" />
+      <Association Name="StaffLogin_Class" Member="Classes" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="Class" />
+      <Association Name="StaffLogin_ClassAttendance" Member="ClassAttendances" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="ClassAttendance" />
+      <Association Name="StaffLogin_ClassAttendance1" Member="ClassAttendances1" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="ClassAttendance" />
+      <Association Name="StaffLogin_ClassExam" Member="ClassExams" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="ClassExam" />
+      <Association Name="StaffLogin_ClassExam1" Member="ClassExams1" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="ClassExam" />
+      <Association Name="StaffLogin_ClassFullMark" Member="ClassFullMarks" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="ClassFullMark" />
+      <Association Name="StaffLogin_ClassFullMark1" Member="ClassFullMarks1" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="ClassFullMark" />
+      <Association Name="StaffLogin_ClassSubject" Member="ClassSubjects" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="ClassSubject" />
+      <Association Name="StaffLogin_ClassSubject1" Member="ClassSubjects1" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="ClassSubject" />
+      <Association Name="StaffLogin_ExamFullMark" Member="ExamFullMarks" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="ExamFullMark" />
+      <Association Name="StaffLogin_ExamFullMark1" Member="ExamFullMarks1" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="ExamFullMark" />
+      <Association Name="StaffLogin_FeeAdmission" Member="FeeAdmissions" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="FeeAdmission" />
+      <Association Name="StaffLogin_FeeAdmission1" Member="FeeAdmissions1" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="FeeAdmission" />
+      <Association Name="StaffLogin_FeeAdmissionHead" Member="FeeAdmissionHeads" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="FeeAdmissionHead" />
+      <Association Name="StaffLogin_FeeClass" Member="FeeClasses" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="FeeClass" />
+      <Association Name="StaffLogin_FeeClass1" Member="FeeClasses1" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="FeeClass" />
+      <Association Name="StaffLogin_FeeClassHead" Member="FeeClassHeads" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="FeeClassHead" />
+      <Association Name="StaffLogin_FeePayment" Member="FeePayments" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="FeePayment" />
+      <Association Name="StaffLogin_FeePayment1" Member="FeePayments1" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="FeePayment" />
+      <Association Name="StaffLogin_FeePaymentDetail" Member="FeePaymentDetails" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="FeePaymentDetail" />
+      <Association Name="StaffLogin_FeeRegistration" Member="FeeRegistrations" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="FeeRegistration" />
+      <Association Name="StaffLogin_FeeRegistration1" Member="FeeRegistrations1" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="FeeRegistration" />
+      <Association Name="StaffLogin_FeeRegistrationHead" Member="FeeRegistrationHeads" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="FeeRegistrationHead" />
+      <Association Name="StaffLogin_FeeRemark" Member="FeeRemarks" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="FeeRemark" />
+      <Association Name="StaffLogin_FeeSubjectOption" Member="FeeSubjectOptions" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="FeeSubjectOption" />
+      <Association Name="StaffLogin_FeeSubjectOption1" Member="FeeSubjectOptions1" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="FeeSubjectOption" />
+      <Association Name="StaffLogin_FeeSubjectOptionHead" Member="FeeSubjectOptionHeads" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="FeeSubjectOptionHead" />
+      <Association Name="StaffLogin_FeeTransport" Member="FeeTransports" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="FeeTransport" />
+      <Association Name="StaffLogin_FeeTransport1" Member="FeeTransports1" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="FeeTransport" />
+      <Association Name="StaffLogin_FeeTransportHead" Member="FeeTransportHeads" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="FeeTransportHead" />
+      <Association Name="StaffLogin_GradeGroup" Member="GradeGroups" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="GradeGroup" />
+      <Association Name="StaffLogin_GradingSystem" Member="GradingSystems" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="GradingSystem" />
+      <Association Name="StaffLogin_GradingSystem1" Member="GradingSystems1" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="GradingSystem" />
+      <Association Name="StaffLogin_Head" Member="Heads" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="Head" />
+      <Association Name="StaffLogin_Magazine" Member="Magazines" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="Magazine" />
+      <Association Name="StaffLogin_Menu" Member="Menus" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="Menu" />
+      <Association Name="StaffLogin_NewsPaper" Member="NewsPapers" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="NewsPaper" />
+      <Association Name="StaffLogin_Page" Member="Pages" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="Page" />
+      <Association Name="StaffLogin_PageGroup" Member="PageGroups" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="PageGroup" />
+      <Association Name="StaffLogin_Pupil" Member="Pupils" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="Pupil" />
+      <Association Name="StaffLogin_Pupil1" Member="Pupils1" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="Pupil" />
+      <Association Name="StaffLogin_PupilAdmission" Member="PupilAdmissions" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="PupilAdmission" />
+      <Association Name="StaffLogin_PupilAdmission1" Member="PupilAdmissions1" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="PupilAdmission" />
+      <Association Name="StaffLogin_PupilAttendance" Member="PupilAttendances" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="PupilAttendance" />
+      <Association Name="StaffLogin_PupilAttendance1" Member="PupilAttendances1" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="PupilAttendance" />
+      <Association Name="StaffLogin_PupilCharge" Member="PupilCharges" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="PupilCharge" />
+      <Association Name="StaffLogin_PupilCharge1" Member="PupilCharges1" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="PupilCharge" />
+      <Association Name="StaffLogin_PupilGrade" Member="PupilGrades" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="PupilGrade" />
+      <Association Name="StaffLogin_PupilGrade1" Member="PupilGrades1" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="PupilGrade" />
+      <Association Name="StaffLogin_PupilMark" Member="PupilMarks" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="PupilMark" />
+      <Association Name="StaffLogin_PupilMark1" Member="PupilMarks1" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="PupilMark" />
+      <Association Name="StaffLogin_PupilSubject" Member="PupilSubjects" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="PupilSubject" />
+      <Association Name="StaffLogin_PupilSubject1" Member="PupilSubjects1" ThisKey="StaffLoginId" OtherKey="UpatedBy" Type="PupilSubject" />
+      <Association Name="StaffLogin_PupilWaiveOff" Member="PupilWaiveOffs" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="PupilWaiveOff" />
+      <Association Name="StaffLogin_PupilWaiveOff1" Member="PupilWaiveOffs1" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="PupilWaiveOff" />
+      <Association Name="StaffLogin_Purchase" Member="Purchases" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="Purchase" />
+      <Association Name="StaffLogin_Purchase1" Member="Purchases1" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="Purchase" />
+      <Association Name="StaffLogin_PurchaseBook" Member="PurchaseBooks" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="PurchaseBook" />
+      <Association Name="StaffLogin_PurchaseBook1" Member="PurchaseBooks1" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="PurchaseBook" />
+      <Association Name="StaffLogin_PurchaseMagazine" Member="PurchaseMagazines" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="PurchaseMagazine" />
+      <Association Name="StaffLogin_PurchaseMagazine1" Member="PurchaseMagazines1" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="PurchaseMagazine" />
+      <Association Name="StaffLogin_PurchaseNewsPaper" Member="PurchaseNewsPapers" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="PurchaseNewsPaper" />
+      <Association Name="StaffLogin_PurchaseNewsPaper1" Member="PurchaseNewsPapers1" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="PurchaseNewsPaper" />
+      <Association Name="StaffLogin_Rack" Member="Racks" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="Rack" />
+      <Association Name="StaffLogin_Registration" Member="Registrations" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="Registration" />
+      <Association Name="StaffLogin_Registration1" Member="Registrations1" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="Registration" />
+      <Association Name="StaffLogin_RegistrationForm" Member="RegistrationForms" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="RegistrationForm" />
+      <Association Name="StaffLogin_RegistrationForm1" Member="RegistrationForms1" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="RegistrationForm" />
+      <Association Name="StaffLogin_Role" Member="Roles" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="Role" />
+      <Association Name="StaffLogin_RoleMenu" Member="RoleMenus" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="RoleMenu" />
+      <Association Name="StaffLogin_Section" Member="Sections" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="Section" />
+      <Association Name="StaffLogin_Staff" Member="Staffs" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="Staff" />
+      <Association Name="StaffLogin_StaffClass" Member="StaffClasses" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="StaffClass" />
+      <Association Name="StaffLogin_StaffLogin" Member="StaffLogins" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="StaffLogin" />
+      <Association Name="StaffLogin_StaffLogin1" Member="StaffLogins1" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="StaffLogin" />
+      <Association Name="StaffLogin_StaffLoginRole" Member="StaffLoginRoles" ThisKey="StaffLoginId" OtherKey="StaffLoginId" Type="StaffLoginRole" />
+      <Association Name="StaffLogin_StaffLoginRole1" Member="StaffLoginRoles1" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="StaffLoginRole" />
+      <Association Name="StaffLogin_State" Member="States" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="State" />
+      <Association Name="StaffLogin_Subject" Member="Subjects" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="Subject" />
+      <Association Name="StaffLogin_Subject1" Member="Subjects1" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="Subject" />
+      <Association Name="StaffLogin_SubjectFullMark" Member="SubjectFullMarks" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="SubjectFullMark" />
+      <Association Name="StaffLogin_SubjectFullMark1" Member="SubjectFullMarks1" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="SubjectFullMark" />
+      <Association Name="StaffLogin_SubjectGradingScale" Member="SubjectGradingScales" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="SubjectGradingScale" />
+      <Association Name="StaffLogin_SubjectGradingScale1" Member="SubjectGradingScales1" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="SubjectGradingScale" />
+      <Association Name="StaffLogin_SubjectId" Member="SubjectIds" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="SubjectId" />
+      <Association Name="StaffLogin_SubjectId1" Member="SubjectIds1" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="SubjectId" />
+      <Association Name="StaffLogin_SubjectOption" Member="SubjectOptions" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="SubjectOption" />
+      <Association Name="StaffLogin_SubjectOption1" Member="SubjectOptions1" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="SubjectOption" />
+      <Association Name="StaffLogin_Supplier" Member="Suppliers" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="Supplier" />
+      <Association Name="StaffLogin_Supplier1" Member="Suppliers1" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="Supplier" />
+      <Association Name="StaffLogin_TransportBatch" Member="TransportBatches" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="TransportBatch" />
+      <Association Name="StaffLogin_TransportDuration" Member="TransportDurations" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="TransportDuration" />
+      <Association Name="StaffLogin_TransportDuration1" Member="TransportDurations1" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="TransportDuration" />
+      <Association Name="StaffLogin_TransportPupil" Member="TransportPupils" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="TransportPupil" />
+      <Association Name="StaffLogin_TransportPupil1" Member="TransportPupils1" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="TransportPupil" />
+      <Association Name="StaffLogin_Vehicle" Member="Vehicles" ThisKey="StaffLoginId" OtherKey="CreatedBy" Type="Vehicle" />
+      <Association Name="StaffLogin_Vehicle1" Member="Vehicles1" ThisKey="StaffLoginId" OtherKey="UpdatedBy" Type="Vehicle" />
+      <Association Name="School_StaffLogin" Member="School" ThisKey="SchoolId" OtherKey="SchoolId" Type="School" IsForeignKey="true" />
+      <Association Name="Staff_StaffLogin" Member="Staff" ThisKey="StaffId" OtherKey="StaffId" Type="Staff" IsForeignKey="true" />
+      <Association Name="StaffLogin_StaffLogin" Member="StaffLogin1" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="StaffLogin_StaffLogin1" Member="StaffLogin2" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.StaffLoginRole" Member="StaffLoginRoles">
+    <Type Name="StaffLoginRole">
+      <Column Name="StaffLoginRoleId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="StaffLoginId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RoleId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Association Name="StaffLogin_StaffLoginRole" Member="StaffLogin" ThisKey="StaffLoginId" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="StaffLogin_StaffLoginRole1" Member="StaffLogin1" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="Role_StaffLoginRole" Member="Role" ThisKey="RoleId" OtherKey="RoleId" Type="Role" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.State" Member="States">
+    <Type Name="State">
+      <Column Name="StateId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="StateName" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="State_City" Member="Cities" ThisKey="StateId" OtherKey="StateId" Type="City" />
+      <Association Name="StaffLogin_State" Member="StaffLogin" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Subject" Member="Subjects">
+    <Type Name="Subject">
+      <Column Name="SubjectId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SubjectName" Type="System.String" DbType="NVarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="ParentSubjectId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Subject_BookRack" Member="BookRacks" ThisKey="SubjectId" OtherKey="SubjectId" Type="BookRack" />
+      <Association Name="Subject_BookSubject" Member="BookSubjects" ThisKey="SubjectId" OtherKey="SubjectId" Type="BookSubject" />
+      <Association Name="Subject_ClassSubject" Member="ClassSubjects" ThisKey="SubjectId" OtherKey="SubjectId" Type="ClassSubject" />
+      <Association Name="StaffLogin_Subject" Member="StaffLogin" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="StaffLogin_Subject1" Member="StaffLogin1" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SubjectFullMarks" Member="SubjectFullMarks">
+    <Type Name="SubjectFullMark">
+      <Column Name="SubjectFullMarksId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Term" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="ClassSubjectId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ClassExamId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TheoryPassingMarks" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="TheoryFullMarks" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Column Name="PracticalPassingMarks" Type="System.Decimal" DbType="Decimal(18,2) NOT NULL" CanBeNull="false" />
+      <Column Name="PracticalFullMarks" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="SubjectFullMark_PupilMark" Member="PupilMarks" ThisKey="SubjectFullMarksId" OtherKey="SubjectFullMarkId" Type="PupilMark" />
+      <Association Name="ClassExam_SubjectFullMark" Member="ClassExam" ThisKey="ClassExamId" OtherKey="ClassExamId" Type="ClassExam" IsForeignKey="true" />
+      <Association Name="ClassSubject_SubjectFullMark" Member="ClassSubject" ThisKey="ClassSubjectId" OtherKey="ClassSubjectId" Type="ClassSubject" IsForeignKey="true" />
+      <Association Name="StaffLogin_SubjectFullMark" Member="StaffLogin" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="StaffLogin_SubjectFullMark1" Member="StaffLogin1" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SubjectGradingScale" Member="SubjectGradingScales">
+    <Type Name="SubjectGradingScale">
+      <Column Name="SubjectGradingScaleId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ClassSubjectId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Term" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="GradingScaleId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="SubjectGradingScale_PupilGrade" Member="PupilGrades" ThisKey="SubjectGradingScaleId" OtherKey="SubjectGradingScaleId" Type="PupilGrade" />
+      <Association Name="ClassSubject_SubjectGradingScale" Member="ClassSubject" ThisKey="ClassSubjectId" OtherKey="ClassSubjectId" Type="ClassSubject" IsForeignKey="true" />
+      <Association Name="GradingScale_SubjectGradingScale" Member="GradingScale" ThisKey="GradingScaleId" OtherKey="GradingScaleId" Type="GradingScale" IsForeignKey="true" />
+      <Association Name="StaffLogin_SubjectGradingScale" Member="StaffLogin" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="StaffLogin_SubjectGradingScale1" Member="StaffLogin1" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SubjectId" Member="SubjectIds">
+    <Type Name="SubjectId">
+      <Column Name="SubjectId" Member="SubjectId1" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ParentSubjectId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SubjectName" Type="System.String" DbType="NVarChar(150) NOT NULL" CanBeNull="false" />
+      <Column Name="SubjectCode" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="IsTheory" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsPractical" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="SubjectId_SubjectId" Member="SubjectId3" ThisKey="SubjectId1" OtherKey="SubjectId1" Type="SubjectId" Cardinality="One" />
+      <Association Name="StaffLogin_SubjectId" Member="StaffLogin" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="SubjectId_SubjectId" Member="SubjectId2" ThisKey="SubjectId1" OtherKey="SubjectId1" Type="SubjectId" IsForeignKey="true" />
+      <Association Name="StaffLogin_SubjectId1" Member="StaffLogin1" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SubjectOption" Member="SubjectOptions">
+    <Type Name="SubjectOption">
+      <Column Name="SubjectOptionId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ClassId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SessionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SubjectOptionName" Type="System.String" DbType="NVarChar(150) NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="SubjectOption_FeeSubjectOption" Member="FeeSubjectOptions" ThisKey="SubjectOptionId" OtherKey="SubjectOptionId" Type="FeeSubjectOption" />
+      <Association Name="Class_SubjectOption" Member="Class" ThisKey="ClassId" OtherKey="ClassId" Type="Class" IsForeignKey="true" />
+      <Association Name="StaffLogin_SubjectOption" Member="StaffLogin" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="StaffLogin_SubjectOption1" Member="StaffLogin1" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="Session_SubjectOption" Member="Session" ThisKey="SessionId" OtherKey="SessionId" Type="Session" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Supplier" Member="Suppliers">
+    <Type Name="Supplier">
+      <Column Name="SupplierId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SupplierName" Type="System.String" DbType="NVarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="MobileNo" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="GSTNo" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="CityId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Address" Type="System.String" DbType="NVarChar(250)" CanBeNull="true" />
+      <Column Name="SupplierFor" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Supplier_Purchase" Member="Purchases" ThisKey="SupplierId" OtherKey="SupplierId" Type="Purchase" />
+      <Association Name="City_Supplier" Member="City" ThisKey="CityId" OtherKey="CityId" Type="City" IsForeignKey="true" />
+      <Association Name="StaffLogin_Supplier" Member="StaffLogin" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="StaffLogin_Supplier1" Member="StaffLogin1" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TransportBatch" Member="TransportBatches">
+    <Type Name="TransportBatch">
+      <Column Name="TransportBatchId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="BatchName" Type="System.String" DbType="NVarChar(150) NOT NULL" CanBeNull="false" />
+      <Column Name="SchoolId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Association Name="TransportBatch_FeeTransport" Member="FeeTransports" ThisKey="TransportBatchId" OtherKey="TransportBatchId" Type="FeeTransport" />
+      <Association Name="TransportBatch_TransportPupil" Member="TransportPupils" ThisKey="TransportBatchId" OtherKey="TransportBatchId" Type="TransportPupil" />
+      <Association Name="School_TransportBatch" Member="School" ThisKey="SchoolId" OtherKey="SchoolId" Type="School" IsForeignKey="true" />
+      <Association Name="StaffLogin_TransportBatch" Member="StaffLogin" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TransportDuration" Member="TransportDurations">
+    <Type Name="TransportDuration">
+      <Column Name="TransportDurationId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SchoolId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FromDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="ToDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="TransportDuration_FeeTransport" Member="FeeTransports" ThisKey="TransportDurationId" OtherKey="TransportDurationId" Type="FeeTransport" />
+      <Association Name="School_TransportDuration" Member="School" ThisKey="SchoolId" OtherKey="SchoolId" Type="School" IsForeignKey="true" />
+      <Association Name="StaffLogin_TransportDuration" Member="StaffLogin" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="StaffLogin_TransportDuration1" Member="StaffLogin1" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TransportPupil" Member="TransportPupils">
+    <Type Name="TransportPupil">
+      <Column Name="TransportPupilId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PupilId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TransportBatchId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="VehicleId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PickupAddress" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="PickupTime" Type="System.TimeSpan" DbType="Time NOT NULL" CanBeNull="false" />
+      <Column Name="StartDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="EndDate" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Pupil_TransportPupil" Member="Pupil" ThisKey="PupilId" OtherKey="PupilId" Type="Pupil" IsForeignKey="true" />
+      <Association Name="StaffLogin_TransportPupil" Member="StaffLogin" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="StaffLogin_TransportPupil1" Member="StaffLogin1" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="TransportBatch_TransportPupil" Member="TransportBatch" ThisKey="TransportBatchId" OtherKey="TransportBatchId" Type="TransportBatch" IsForeignKey="true" />
+      <Association Name="Vehicle_TransportPupil" Member="Vehicle" ThisKey="VehicleId" OtherKey="VehicleId" Type="Vehicle" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Vehicle" Member="Vehicles">
+    <Type Name="Vehicle">
+      <Column Name="VehicleId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="VehicleTypeId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="VehicleNo" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="VehicleName" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="OwnerName" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Column Name="OwnerMobileNo" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="NoOfSeats" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Status" Type="System.Byte" DbType="TinyInt NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="CreatedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UpdatedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="UpdatedBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Vehicle_TransportPupil" Member="TransportPupils" ThisKey="VehicleId" OtherKey="VehicleId" Type="TransportPupil" />
+      <Association Name="StaffLogin_Vehicle" Member="StaffLogin" ThisKey="CreatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="StaffLogin_Vehicle1" Member="StaffLogin1" ThisKey="UpdatedBy" OtherKey="StaffLoginId" Type="StaffLogin" IsForeignKey="true" />
+      <Association Name="VehicleType_Vehicle" Member="VehicleType" ThisKey="VehicleTypeId" OtherKey="VehicleTypeId" Type="VehicleType" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>

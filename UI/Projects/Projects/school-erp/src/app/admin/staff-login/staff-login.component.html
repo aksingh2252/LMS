@@ -1,0 +1,200 @@
+<app-progress *ngIf="dataLoading"></app-progress>
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Staff Login Master
+            <button mat-raised-button color="primary" class="float-right" (click)="newStaffLogin()">New
+                Staff Login</button>
+        </h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a routerLink="admin/admin-dashboard">Home</a></li>
+                <li class="breadcrumb-item active">Staff Login Master</li>
+            </ol>
+        </nav>
+    </div>
+
+    <section class="section dashboard">
+
+        <div class="card">
+            <div class="card-body ">
+                <div class="table-container overflow-auto">
+
+                    <div class="dataTable-top">
+                        <div class="dataTable-dropdown d-flex">
+                            <select class="dataTable-selector form-select form-select-sm" [(ngModel)]="itemPerPage">
+                                <option *ngFor="let option of PageSize" [value]="option">{{option}} </option>
+                            </select>
+                            <span class="ms-2">Entries per page</span>
+                        </div>
+                        <div class="dataTable-search">
+                            <input class="dataTable-input form-control form-control-sm" [(ngModel)]="Search"
+                                placeholder="Search..." type="text">
+                        </div>
+                    </div>
+
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>S.No</th>
+                                <th style="cursor:pointer;" (click)="sort('StaffName')">Staff</th>
+                                <th style="cursor:pointer;" (click)="sort('UserName')">User Name</th>
+                                <!-- <th style="cursor:pointer;" (click)="sort('LoginPassword')">LoginPassword</th> -->
+                                <th style="cursor:pointer;" (click)="sort('SchoolName')">School</th>
+                                <th style="cursor:pointer;" (click)="sort('Status')">Status</th>
+                                <th>Role</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr
+                                *ngFor="let item of StaffLoginList |filter:Search|orderBy:sortKey:reverse|paginate: { itemsPerPage: itemPerPage, currentPage: p } ; let i = index;">
+                                <td>{{(itemPerPage * (p -1)) +i+ 1}}</td>
+                                <td>{{item.StaffName}}</td>
+                                <td>{{item.UserName}}</td>
+                                <!-- <td>{{item.LoginPassword}}</td> -->
+                                <td>{{item.SchoolName}}</td>
+                                <td>
+                                    <span class="p-1"
+                                        [ngClass]="item.Status == 1 ? 'badge text-bg-success':'badge text-bg-danger'">
+                                        {{AllStatusList[item.Status]}}
+                                    </span>
+                                </td>
+                                <td>
+                                    <ul style="margin: 0;">
+                                        <li *ngFor="let m1 of item.StaffLoginRoleList">{{m1.RoleTitle}}</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-warning" (click)="editStaffLogin(item)">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </button>
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-danger" (click)="deleteStaffLogin(item)">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="dataTable-bottom">
+                        <pagination-controls (pageChange)="onTableDataChange($event)" style="float:right;"
+                            class="my-pagination"></pagination-controls>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">{{StaffLogin.StaffLoginId > 0 ?
+                        'Update':'New'}}
+                        Staff Login
+                    </h1>
+                    <button type=" button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        (click)="resetForm()"></button>
+
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <form #formStaffLogin="ngForm">
+                            <div class="row">
+                                <mat-form-field appearance="outline" class="col-sm-6 form-group">
+                                    <mat-label>Staff</mat-label>
+                                    <input matInput #StaffName="ngModel" name="StaffName"
+                                        (ngModelChange)="filterStaffList(StaffLogin.StaffName)"
+                                        [(ngModel)]="StaffLogin.StaffName" [matAutocomplete]="autoStaffName" required
+                                        autofocus>
+                                    <mat-autocomplete #autoStaffName="matAutocomplete">
+                                        <mat-option *ngFor="let option of filterStaff"
+                                            (onSelectionChange)="StaffLogin.StaffId = option.StaffId"
+                                            [value]="option.StaffName">
+                                            {{option.StaffName}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                    <mat-error
+                                        *ngIf="(StaffName.dirty  || StaffName.touched) || (StaffName.invalid && isSubmitted)">
+                                        Staff Name is <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="col-sm-6 form-group">
+                                    <mat-label>Username</mat-label>
+                                    <input matInput #UserName="ngModel" name="UserName"
+                                        [(ngModel)]="StaffLogin.UserName" required autofocus>
+                                    <mat-error
+                                        *ngIf="(UserName.dirty  || UserName.touched) || (UserName.invalid && isSubmitted)">
+                                        User Name is <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="col-sm-6 form-group">
+                                    <mat-label>Login Password</mat-label>
+                                    <input [type]="hide ? 'password' : 'text'" matInput #LoginPassword="ngModel"
+                                        name="LoginPassword" [(ngModel)]="StaffLogin.LoginPassword" required autofocus>
+                                    <button mat-icon-button matSuffix (click)="hide = !hide"
+                                        [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                                        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                    </button>
+                                    <mat-error
+                                        *ngIf="(LoginPassword.dirty  || LoginPassword.touched) || (LoginPassword.invalid && isSubmitted)">
+                                        Login Password is <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="col-sm-6 form-group">
+                                    <mat-label>Select School</mat-label>
+                                    <mat-select #SchoolId="ngModel" name="SchoolId" [(ngModel)]="StaffLogin.SchoolId"
+                                        required autofocus>
+                                        <mat-option *ngFor="let option of SchoolList"
+                                            [value]="option.SchoolId">{{option.SchoolName}}</mat-option>
+                                    </mat-select>
+                                    <mat-error
+                                        *ngIf="(SchoolId.dirty  || SchoolId.touched) || (SchoolId.invalid && isSubmitted)">
+                                        School is <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="col-sm-6">
+                                    <mat-label>Status</mat-label>
+                                    <mat-select #Status="ngModel" name="Status" [(ngModel)]="StaffLogin.Status"
+                                        required>
+                                        <mat-option [value]="status.Key"
+                                            *ngFor="let status of StatusList">{{status.Value}}</mat-option>
+                                    </mat-select>
+                                    <mat-error
+                                        *ngIf="(Status.dirty  || Status.touched) || (Status.invalid && isSubmitted)">
+                                        Status is <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </form>
+                        <div class="row">
+                            <h3 class="header-text">Staff Roles</h3>
+                            <div class="col-6" *ngFor="let r1 of StaffLoginRoleList">
+                                <input id="id{{r1.RoleId}}" [(ngModel)]="r1.IsSelected" class="form-check-input me-2"
+                                    type="checkbox">
+                                <label for="id{{r1.RoleId}}" class="form-check-label text-link">{{r1.RoleTitle}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer mt-2">
+                        <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal"
+                            (click)="resetForm()">Cancel</button>
+                        <button class="btn btn-primary" (click)="saveStaffLogin()">{{StaffLogin.StaffLoginId >
+                            0 ? 'Update':'Submit'}}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

@@ -1,0 +1,212 @@
+<app-progress *ngIf="dataLoading"></app-progress>
+<main id="main" class="main" *ngIf="action.ResponseReceived">
+    <div class="row">
+        <div class="pagetitle dashboard col-sm-8">
+            <h1>Manage Supplier</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a routerLink="admin/admin-dashboard">Home</a></li>
+                    <li class="breadcrumb-item active">Manage Supplier</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col-sm-4">
+            <button mat-raised-button color="primary" class="float-right" *ngIf="action.CanCreate"
+                (click)="NewSupplier()">New Supplier</button>
+        </div>
+    </div>
+
+
+    <section class="section">
+        <div class="card">
+            <div class="card-body ">
+                <div class="dataTable-top">
+                    <div class="dataTable-dropdown d-flex">
+                        <select class="dataTable-selector form-select form-select-sm" [(ngModel)]="itemPerPage">
+                            <option *ngFor="let option of PageSize" [value]="option">{{option}} </option>
+                        </select>
+                        <span class="ms-2">Entries per page</span>
+                    </div>
+                    <div class="dataTable-search">
+                        <input class="dataTable-input form-control form-control-sm" [(ngModel)]="Search"
+                            placeholder="Search..." type="text">
+                    </div>
+                </div>
+                <div class="table-container overflow-auto">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>S.No</th>
+                                <th>Supplier Name</th>
+                                <th>Mobile No</th>
+                                <th>Email</th>
+                                <th>GST No</th>
+                                <th>State Name</th>
+                                <th>City Name</th>
+                                <th> Address</th>
+                                <th>Supplier For</th>
+                                <th  style="cursor:pointer;" (click)="sort('Status')">Status</th>
+                                <th *ngIf="action.CanEdit">Edit</th>
+                                <th *ngIf="action.CanDelete">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr
+                                *ngFor="let b1 of SupplierList |filter:Search|orderBy:sortKey:reverse|paginate: { itemsPerPage: itemPerPage, currentPage: p } ; ; let i = index;">
+                                <td>{{(itemPerPage * (p -1)) +i+ 1}}</td>
+
+                                <td>{{b1.SupplierName}}</td>
+                                <td>{{b1.MobileNo}}</td>
+                                <td>{{b1.Email}}</td>
+                                <td>{{b1.GSTNo}}</td>
+                                <td>{{b1.stateName}}</td>
+                                <td>{{b1.CityName}}</td>
+                                <td>{{b1.Address}}</td>
+                                <td>{{b1.SupplierFor}}</td>
+                                <td><span class="p-1"
+                                    [ngClass]="b1.Status == 1 ? 'badge text-bg-success':'badge text-bg-danger'">
+                                    {{b1.StatusName}}
+                                </span></td>
+                                <td *ngIf="action.CanEdit">
+                                    <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
+                                        data-bs-target="#staticBackdrop" (click)="editSupplier(b1)">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </button>
+                                </td>
+                                <td *ngIf="action.CanDelete">
+                                    <button class="btn btn-sm btn-danger" (click)="deleteSupplier(b1)">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="dataTable-bottom">
+                    <pagination-controls (pageChange)="onTableDataChange($event)" style="float:right;"
+                        class="my-pagination"></pagination-controls>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">{{Supplier.SupplierId > 0 ?
+                        'Update':'New'}}
+                        Supplier
+                    </h1>
+                    <button type=" button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        (click)="NewSupplier()"></button>
+                </div>
+                <div class="modal-body">
+
+                    <form #formSupplierType="ngForm">
+                        <div class="container">
+                            <div class="row">
+
+                                <mat-form-field appearance="outline" class="col-sm-6 form-group">
+                                    <mat-label>Supplier Name </mat-label>
+                                    <input matInput #SupplierName="ngModel" name="SupplierName"
+                                        [(ngModel)]="Supplier.SupplierName" required autofocus>
+                                    <mat-error
+                                        *ngIf="(SupplierName.dirty  || SupplierName.touched) || (SupplierName.invalid && isSubmitted)">
+                                        Supplier Name is <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="col-sm-6 form-group">
+                                    <mat-label>Mobile No </mat-label>
+                                    <input matInput #MobileNo="ngModel" name="MobileNo" [(ngModel)]="Supplier.MobileNo">
+
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="col-sm-6 form-group">
+                                    <mat-label>Email </mat-label>
+                                    <input matInput #Email="ngModel" name="Email" [(ngModel)]="Supplier.Email" >
+
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="col-sm-6 form-group">
+                                    <mat-label>GST No </mat-label>
+                                    <input matInput #GSTNo="ngModel" name="GSTNo" [(ngModel)]="Supplier.GSTNo">
+
+                                </mat-form-field>
+                               
+                                <mat-form-field appearance="outline" class="col-sm-6 form-group">
+                                    <mat-label>State Name</mat-label>
+                                    <mat-select #StateId="ngModel" name="StateId" (selectionChange)="changeState()" [(ngModel)]="Supplier.StateId">
+                                        <mat-option value="">--All State--</mat-option>
+                                        <mat-option [value]="s1.StateId"
+                                            *ngFor="let s1 of StateList">{{s1.StateName}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                              
+                                <mat-form-field appearance="outline" class="col-sm-6 form-group">
+                                    <mat-label>City Name</mat-label>
+                                    <mat-select #CityId="ngModel" name="CityId" [(ngModel)]="Supplier.CityId">
+                                        <mat-option value="">--All City--</mat-option>
+                                        <mat-option [value]="s1.CityId"
+                                            *ngFor="let s1 of CityList">{{s1.CityName}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+<!-- 
+                                <mat-form-field appearance="outline" class="col-sm-6 form-group">
+                                    <mat-label>City Name </mat-label>
+                                    <input matInput #CityName="ngModel" name="CityName" [(ngModel)]="Supplier.CityId"
+                                        required autofocus>
+                                    <mat-error
+                                        *ngIf="(CityName.dirty  || CityName.touched) || (CityName.invalid && isSubmitted)">
+                                        City Name is <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field> -->
+
+                                <mat-form-field appearance="outline" class="col-sm-6 form-group">
+                                    <mat-label>Address </mat-label>
+                                    <input matInput #Address="ngModel" name="Address" [(ngModel)]="Supplier.Address">
+
+                                </mat-form-field>
+
+
+
+                                <mat-form-field appearance="outline" class="col-sm-6 form-group">
+                                    <mat-label>Supplier For</mat-label>
+                                    <mat-select #SupplierFor="ngModel" name="SupplierFor"
+                                        [(ngModel)]="Supplier.SupplierFor">
+                                        <mat-option value="">--All Supplier For--</mat-option>
+                                        <mat-option value="Library">Library</mat-option>
+                                        <mat-option value="Store">Store</mat-option>
+                                        <mat-option value="Transport">Transport</mat-option>
+
+                                    </mat-select>
+
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="col-sm-6 form-group">
+                                    <mat-label>Status</mat-label>
+                                    <mat-select #Status="ngModel" name="Status" [(ngModel)]="Supplier.Status" required>
+                                        <mat-option [value]="status.Key"
+                                            *ngFor="let status of StatusList">{{status.Value}}</mat-option>
+                                    </mat-select>
+                                    <mat-error
+                                        *ngIf="(Status.dirty  || Status.touched) || (Status.invalid && isSubmitted)">
+                                        Status is <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" mat-raised-button color="warn" class="me-2" data-bs-dismiss="modal"
+                        (click)="NewSupplier()">Cancel</button>
+                    <button mat-raised-button color="primary" (click)=" SaveSupplier()">{{Supplier.SupplierId >
+                        0 ? 'Update':'Submit'}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
